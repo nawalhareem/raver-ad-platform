@@ -69,6 +69,8 @@ export default function AIResponseModal({
   const { user } = useUser();
   const [isGenerating, setIsGenerating] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   // Voice input for chat
   const handleVoiceResult = useCallback((text: string) => {
@@ -134,6 +136,29 @@ export default function AIResponseModal({
 
   // Display value includes interim (not-yet-committed) speech
   const chatDisplayValue = inputText + (interimText ? " " + interimText : "");
+
+  // Auto-resize textarea with a max height limit
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      const maxHeight = 160; // Limit dynamic expansion to 160px
+      if (textarea.scrollHeight > maxHeight) {
+        textarea.style.height = `${maxHeight}px`;
+        textarea.style.overflowY = "auto";
+      } else {
+        textarea.style.height = `${textarea.scrollHeight}px`;
+        textarea.style.overflowY = "hidden";
+      }
+    }
+  }, [chatDisplayValue]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      formRef.current?.requestSubmit();
+    }
+  };
 
   const lastAIMessage = [...messages].reverse().find(m => m.role === "ai");
   const isTerminalMessage = lastAIMessage?.content?.includes("Your image is queued — generation has started!") ||
@@ -517,8 +542,9 @@ export default function AIResponseModal({
         {/* Message Input Bottom */}
         <div className="p-6 bg-white border-t border-[#F1F5F9]">
           <form
+            ref={formRef}
             onSubmit={handleSendMessage}
-            className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-2xl p-1.5 shadow-inner transition-all focus-within:ring-2 focus-within:ring-[#02022C]/5 focus-within:border-[#02022C]/10"
+            className="flex items-end gap-2 bg-slate-50 border border-slate-200 rounded-2xl p-1.5 shadow-inner transition-all focus-within:ring-2 focus-within:ring-[#02022C]/5 focus-within:border-[#02022C]/10"
           >
             {/* Mic Button */}
             <button
@@ -535,9 +561,10 @@ export default function AIResponseModal({
             >
               <Icons.Mic className="w-4 h-4" />
             </button>
-            <div className="flex-1 relative">
-              <input
-                type="text"
+            <div className="flex-1 min-w-0 relative">
+              <textarea
+                ref={textareaRef}
+                rows={1}
                 placeholder={
                   isTerminalMessage
                     ? "Production started. Tracking progress..."
@@ -547,9 +574,10 @@ export default function AIResponseModal({
                 }
                 value={chatDisplayValue}
                 onChange={(e) => setInputText(e.target.value)}
+                onKeyDown={handleKeyDown}
                 disabled={isInputDisabled}
                 className={cn(
-                  "w-full bg-transparent py-2 text-[14px] text-[#121212] outline-none placeholder:text-slate-400 font-medium disabled:cursor-not-allowed pl-3 transition-all",
+                  "w-full min-w-0 bg-transparent py-2.5 text-[14px] text-[#121212] outline-none placeholder:text-slate-400 font-medium disabled:cursor-not-allowed pl-3 transition-all resize-none overflow-y-hidden leading-relaxed block",
                   isListening ? "pr-16" : "pr-3"
                 )}
               />
@@ -562,7 +590,7 @@ export default function AIResponseModal({
             <button
               type="submit"
               disabled={!inputText.trim() || isInputDisabled}
-              className="h-[44px] px-6 bg-[#02022C] text-white rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:active:scale-100 shadow-md shadow-[#02022C]/10 font-bold"
+              className="h-[44px] px-6 shrink-0 bg-[#02022C] text-white rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:active:scale-100 shadow-md shadow-[#02022C]/10 font-bold"
             >
               Ask <Icons.Send className="w-4 h-4 ml-1 text-white" />
             </button>

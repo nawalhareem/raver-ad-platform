@@ -284,20 +284,20 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
 
             <div className="flex flex-col gap-3">
                <label className="text-xs font-black uppercase tracking-widest text-white/40">Cinematic Transitions</label>
-               <div className="grid grid-cols-5 gap-2">
+               <div className="flex flex-wrap gap-2">
                  {["fade", "dissolve", "slideright", "slideleft", "none"].map((t) => (
                    <button
                      key={t}
                      type="button"
                      onClick={() => setTransition(t)}
                      className={cn(
-                       "py-2 rounded-lg text-xs font-black uppercase tracking-tight transition-all border",
+                       "px-3 py-2 rounded-lg text-xs font-black uppercase tracking-tight transition-all border shrink-0",
                        transition === t 
                          ? "bg-white text-brand-primary border-white shadow-lg" 
                          : "bg-white/5 text-white/40 border-white/10 hover:bg-white/10"
                      )}
                    >
-                     {t}
+                     {t === "slideright" ? "Slide Right" : t === "slideleft" ? "Slide Left" : t}
                    </button>
                  ))}
                </div>
