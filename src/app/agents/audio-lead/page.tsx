@@ -422,7 +422,7 @@ function AudioLeadContent() {
                 <Icons.ArrowLeft className="w-5 h-5 text-brand-primary group-hover:-translate-x-0.5 transition-transform" />
               </Link>
               <div className="flex flex-col">
-                 <h1 className="text-[28px] sm:text-[34px] font-black text-brand-primary tracking-tighter lowercase leading-none">RAVER AI AUDIO LEAD</h1>
+                 <h1 className="text-[28px] sm:text-[34px] font-black text-brand-primary tracking-normal lowercase leading-none">RAVER AI AUDIO LEAD</h1>
                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mt-3">Synthesizing the Atmosphere of Production</p>
               </div>
             </div>
@@ -432,7 +432,7 @@ function AudioLeadContent() {
                 <div className="hidden lg:flex items-center gap-4 px-5 py-2.5 bg-slate-50 rounded-[18px] border border-slate-100/50">
                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
                    <div className="flex flex-col">
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Active Sync Session</span>
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-normal">Active Sync Session</span>
                       <span className="text-[10px] font-black text-brand-primary font-mono">{sessionId}</span>
                    </div>
                    <button 

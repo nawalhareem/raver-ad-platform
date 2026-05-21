@@ -48,7 +48,7 @@ export function AudioVault({
             <Icons.Loader className="w-8 h-8 text-slate-300 animate-spin" />
          </div>
          <div className="flex flex-col gap-2">
-            <h3 className="text-xl font-black text-brand-primary tracking-tighter lowercase">
+            <h3 className="text-xl font-black text-brand-primary tracking-normal lowercase">
               {isGlobalArchive ? "Neural Archives Syncing..." : "Session Vault Syncing..."}
             </h3>
             <p className="text-sm text-slate-400 font-bold max-w-xs">Accessing the synthesis archives to retrieve your audio assets.</p>
@@ -64,7 +64,7 @@ export function AudioVault({
             <Icons.Mic className="w-8 h-8 text-slate-200" />
          </div>
          <div className="flex flex-col gap-2">
-            <h3 className="text-xl font-black text-brand-primary tracking-tighter lowercase">
+            <h3 className="text-xl font-black text-brand-primary tracking-normal lowercase">
               {isGlobalArchive ? "zero synthesis results found_" : "no session assets synthesized_"}
             </h3>
             <p className="text-sm text-slate-400 font-bold max-w-xs text-balance">
@@ -80,7 +80,7 @@ export function AudioVault({
       <div className="flex items-center justify-between border-b border-slate-50 pb-6">
         <div className="flex items-center gap-3">
           <Icons.Files className="w-5 h-5 text-brand-primary" />
-          <h3 className="text-xl font-black text-brand-primary tracking-tighter lowercase">
+          <h3 className="text-xl font-black text-brand-primary tracking-normal lowercase">
             {isGlobalArchive ? "Global Synthesis Archives" : "Session Audit Vault"}
           </h3>
         </div>
@@ -136,14 +136,14 @@ export function AudioVault({
                <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
                     <Icons.Clock className="w-3 h-3 text-slate-300" />
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-normal">
                        {new Date(asset.timestamp).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
                     </span>
                   </div>
                   {asset.business_name && (
                     <div className="flex items-center gap-2">
                        <Icons.Dashboard className="w-3 h-3 text-blue-400" />
-                       <span className="text-[10px] font-black text-blue-500 uppercase tracking-tighter">
+                       <span className="text-[10px] font-black text-blue-500 uppercase tracking-normal">
                          {asset.business_name}
                        </span>
                     </div>

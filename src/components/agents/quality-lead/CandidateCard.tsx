@@ -171,7 +171,7 @@ export function CandidateCard({
       {/* Candidate Metadata */}
       <div className="p-5 space-y-4">
         <div className="flex items-center justify-between">
-           <h4 className="text-[13px] font-black text-brand-primary tracking-tighter uppercase truncate pr-4">
+           <h4 className="text-[13px] font-black text-brand-primary tracking-normal uppercase truncate pr-4">
              {label}
            </h4>
            <div className="p-2 rounded-lg bg-slate-50 border border-slate-100 group-hover:bg-blue-50 group-hover:border-blue-100 transition-colors">

@@ -38,10 +38,6 @@
   
   /* Semantic Borders */
   --color-border-subtle: var(--card-border);
-
-  /* Tracking / Letter Spacing overrides */
-  --tracking-tighter: 0.02em;
-  --tracking-tight: 0.035em;
 }
 
 :root {
@@ -237,5 +233,20 @@ video::-webkit-media-text-track-display {
 
 video::-webkit-media-text-track-container {
   overflow: visible !important;
+}
+
+/* Relax letter spacing globally for all headings and heavy text elements to prevent squished/colliding letters */
+h1:not(.tracking-wider):not(.tracking-widest),
+h2:not(.tracking-wider):not(.tracking-widest),
+h3:not(.tracking-wider):not(.tracking-widest),
+h4:not(.tracking-wider):not(.tracking-widest),
+h5:not(.tracking-wider):not(.tracking-widest),
+h6:not(.tracking-wider):not(.tracking-widest),
+.text-h1:not(.tracking-wider):not(.tracking-widest),
+.text-h2:not(.tracking-wider):not(.tracking-widest),
+.text-h3:not(.tracking-wider):not(.tracking-widest),
+.font-black:not(.tracking-wider):not(.tracking-widest),
+.font-extrabold:not(.tracking-wider):not(.tracking-widest) {
+  letter-spacing: 0.025em !important;
 }
 

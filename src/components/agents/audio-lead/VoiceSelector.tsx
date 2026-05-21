@@ -232,7 +232,7 @@ export function VoiceSelector({ selectedVoice, onSelect, className, isDark }: Vo
              )}>
                {currentVoice.name}
              </span>
-             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter truncate">{currentVoice.accent} • {currentVoice.category}</span>
+             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-normal truncate">{currentVoice.accent} • {currentVoice.category}</span>
           </div>
         </div>
         <Icons.ChevronDown className={cn("w-4 h-4 text-slate-300 transition-transform duration-500", isOpen && "rotate-180")} />
@@ -269,7 +269,7 @@ export function VoiceSelector({ selectedVoice, onSelect, className, isDark }: Vo
                     </div>
                     <div className="flex flex-col overflow-hidden">
                        <span className={cn("text-xs font-black tracking-tight", selectedVoice === voice.id ? "text-white" : "text-brand-primary")}>{voice.name}</span>
-                       <span className={cn("text-[8px] font-bold uppercase tracking-tighter opacity-60 leading-none mb-1", selectedVoice === voice.id ? "text-white" : "text-slate-400")}>
+                       <span className={cn("text-[8px] font-bold uppercase tracking-normal opacity-60 leading-none mb-1", selectedVoice === voice.id ? "text-white" : "text-slate-400")}>
                          {voice.accent} • {voice.category}
                        </span>
                        <span className={cn("text-[10px] truncate max-w-[150px]", selectedVoice === voice.id ? "text-white/70" : "text-slate-500")}>

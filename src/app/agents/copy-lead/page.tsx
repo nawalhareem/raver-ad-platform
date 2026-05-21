@@ -201,7 +201,7 @@ function CopyLeadContent() {
                 <Icons.ArrowLeft className="w-5 h-5 text-brand-primary group-hover:-translate-x-0.5 transition-transform" />
               </Link>
               <div className="flex flex-col">
-                 <h1 className="text-[24px] sm:text-[34px] font-black text-brand-primary tracking-tighter lowercase leading-none">raver ai copy lead</h1>
+                 <h1 className="text-[24px] sm:text-[34px] font-black text-brand-primary tracking-normal lowercase leading-none">raver ai copy lead</h1>
                  <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mt-2 sm:mt-3">Creative Orchestration Studio</p>
               </div>
             </div>
@@ -211,7 +211,7 @@ function CopyLeadContent() {
                 <div className="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-2 sm:py-2.5 bg-slate-50 rounded-[18px] border border-slate-100/50">
                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
                    <div className="flex flex-col min-w-0">
-                      <span className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-tighter truncate">Syncing Session</span>
+                      <span className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-normal truncate">Syncing Session</span>
                       <span className="text-[9px] sm:text-[10px] font-black text-brand-primary font-mono truncate max-w-[120px] sm:max-w-none">{sessionId}</span>
                    </div>
                    <button 

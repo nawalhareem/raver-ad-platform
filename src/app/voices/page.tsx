@@ -208,7 +208,7 @@ export default function VoiceStudioPage() {
         {/* Header section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex flex-col">
-            <h1 className="text-2xl sm:text-[32px] font-black text-brand-primary tracking-tighter lowercase leading-tight sm:leading-none">Custom Voices</h1>
+            <h1 className="text-2xl sm:text-[32px] font-black text-brand-primary tracking-normal lowercase leading-tight sm:leading-none">Custom Voices</h1>
             <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mt-2 sm:mt-3">Advanced ElevenLabs Voice Cloning & Management</p>
           </div>
           
@@ -233,14 +233,14 @@ export default function VoiceStudioPage() {
           <div className="bg-white p-5 sm:p-6 rounded-[20px] sm:rounded-[24px] border border-slate-100 shadow-sm flex flex-col gap-2">
             <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-400">Generation Method</span>
             <div className="flex items-end justify-between">
-              <span className="text-xs sm:text-sm font-black text-brand-primary uppercase tracking-tighter">Instant Cloning</span>
+              <span className="text-xs sm:text-sm font-black text-brand-primary uppercase tracking-normal">Instant Cloning</span>
               <Icons.Zap className="w-6 h-6 sm:w-8 sm:h-8 text-amber-500/20" />
             </div>
           </div>
           <div className="bg-white p-5 sm:p-6 rounded-[20px] sm:rounded-[24px] border border-slate-100 shadow-sm flex flex-col gap-2 sm:col-span-2 lg:col-span-1">
             <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-400">Provider Status</span>
             <div className="flex items-end justify-between">
-              <span className="text-xs sm:text-sm font-black text-emerald-500 uppercase tracking-tighter">ElevenLabs Active</span>
+              <span className="text-xs sm:text-sm font-black text-emerald-500 uppercase tracking-normal">ElevenLabs Active</span>
               <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-emerald-500/10 flex items-center justify-center">
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
@@ -262,7 +262,7 @@ export default function VoiceStudioPage() {
                   </div>
                   <div className="flex flex-col">
                     <h3 className="font-black text-brand-primary tracking-tight text-sm sm:text-base">{voice.name}</h3>
-                    <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{voice.category || "Custom Clone"}</span>
+                    <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-normal">{voice.category || "Custom Clone"}</span>
                   </div>
                 </div>
                 
@@ -296,11 +296,11 @@ export default function VoiceStudioPage() {
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {Object.entries(voice.labels || {}).map(([key, value]) => (
-                    <span key={key} className="px-2 py-0.5 bg-slate-50 border border-slate-100 rounded-md text-[8px] sm:text-[9px] font-bold text-slate-500 uppercase tracking-tighter">
+                    <span key={key} className="px-2 py-0.5 bg-slate-50 border border-slate-100 rounded-md text-[8px] sm:text-[9px] font-bold text-slate-500 uppercase tracking-normal">
                       {key}: {value}
                     </span>
                   ))}
-                  <span className="px-2 py-0.5 bg-blue-50 border border-blue-100 rounded-md text-[8px] sm:text-[9px] font-bold text-blue-500 uppercase tracking-tighter">
+                  <span className="px-2 py-0.5 bg-blue-50 border border-blue-100 rounded-md text-[8px] sm:text-[9px] font-bold text-blue-500 uppercase tracking-normal">
                     {voice.voice_id.substring(0, 8)}...
                   </span>
                 </div>
@@ -413,7 +413,7 @@ export default function VoiceStudioPage() {
                       <span className="text-[10px] sm:text-[11px] font-black text-brand-primary uppercase tracking-widest">
                         {selectedFiles.length > 0 ? `${selectedFiles.length} Samples Selected` : "Click to Upload Samples"}
                       </span>
-                      <p className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-tighter mt-1">MP3, WAV, or M4A (Max 10MB each)</p>
+                      <p className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-normal mt-1">MP3, WAV, or M4A (Max 10MB each)</p>
                     </div>
                     <input 
                       type="file" 

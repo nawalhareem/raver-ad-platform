@@ -182,7 +182,7 @@ function ProducerContent() {
                   </Link>
                 </div>
                 <div className="flex flex-col">
-                  <h1 className="text-[30px] font-bold text-[#121212] tracking-tighter lowercase leading-none">Raver Producer</h1>
+                  <h1 className="text-[30px] font-bold text-[#121212] tracking-normal lowercase leading-none">Raver Producer</h1>
                 </div>
               </div>
 

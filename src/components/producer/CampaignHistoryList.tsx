@@ -18,7 +18,7 @@ export function CampaignHistoryList({ history, onDelete }: CampaignHistoryListPr
             <Icons.Files className="w-5 h-5 text-slate-400" />
           </div>
           <div className="flex flex-col">
-            <h2 className="text-xl font-black text-brand-primary tracking-tighter lowercase leading-none">Production Audits</h2>
+            <h2 className="text-xl font-black text-brand-primary tracking-normal lowercase leading-none">Production Audits</h2>
           </div>
         </div>
         <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-full border border-slate-100">
@@ -39,7 +39,7 @@ export function CampaignHistoryList({ history, onDelete }: CampaignHistoryListPr
             {/* Header Section */}
             <div className="flex items-center justify-between relative z-10 mb-6">
               <div className="flex flex-col gap-1">
-                <h4 className="text-xl font-black text-brand-primary tracking-tighter lowercase">{campaign.name || "unnamed_brief"}</h4>
+                <h4 className="text-xl font-black text-brand-primary tracking-normal lowercase">{campaign.name || "unnamed_brief"}</h4>
               </div>
               <div className="flex items-center gap-3">
                 <div className={cn(
@@ -69,13 +69,13 @@ export function CampaignHistoryList({ history, onDelete }: CampaignHistoryListPr
             {/* Content Section - Grow to push footer down */}
             <div className="flex flex-col gap-6 relative z-10 mb-8 grow">
               <div className="p-4 bg-slate-50/50 rounded-2xl border border-slate-100/50 flex flex-col gap-1">
-                <span className="text-[8px] font-black uppercase text-slate-400 tracking-tighter">Timeline</span>
+                <span className="text-[8px] font-black uppercase text-slate-400 tracking-normal">Timeline</span>
                 <span className="text-[11px] font-bold text-[#0A0A0A] italic">
                   {new Date(campaign.createdAt || campaign.created_at).toLocaleDateString()}
                 </span>
               </div>
               <div className="p-4 bg-slate-50/50 rounded-2xl border border-slate-100/50 flex flex-col gap-1">
-                <span className="text-[8px] font-black uppercase text-slate-400 tracking-tighter">ID Matrix</span>
+                <span className="text-[8px] font-black uppercase text-slate-400 tracking-normal">ID Matrix</span>
                 <span className="text-[10px] font-black text-brand-primary truncate">{campaign.id.split('-')[0]}</span>
               </div>
             </div>

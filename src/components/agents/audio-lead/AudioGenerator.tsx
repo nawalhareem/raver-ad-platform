@@ -88,7 +88,7 @@ export function AudioGenerator({
               <Icons.Activity className="w-6 h-6 text-brand-primary" />
            </div>
            <div className="flex flex-col">
-              <h2 className="text-xl font-black text-brand-primary tracking-tighter lowercase leading-none">Neural Orchestration</h2>
+              <h2 className="text-xl font-black text-brand-primary tracking-normal lowercase leading-none">Neural Orchestration</h2>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2 shrink-0">Creative Parameters Input</span>
            </div>
         </div>

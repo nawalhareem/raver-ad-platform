@@ -351,7 +351,7 @@ export default function StudioHero({
             {selectedVoice && (
               <div className="flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-100 rounded-full animate-in fade-in slide-in-from-right-2 duration-500">
                 <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                <span className="text-[9px] font-black text-emerald-600 uppercase tracking-tighter">Ready For Production</span>
+                <span className="text-[9px] font-black text-emerald-600 uppercase tracking-normal">Ready For Production</span>
               </div>
             )}
           </div>

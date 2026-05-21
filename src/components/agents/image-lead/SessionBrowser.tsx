@@ -69,7 +69,7 @@ export function SessionBrowser({
 
               <div className="flex flex-col gap-1 px-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black truncate tracking-tighter uppercase opacity-80">
+                  <span className="text-[10px] font-black truncate tracking-normal uppercase opacity-80">
                     {s.tag || sid.replace("raver_campaign_", "ID: ")}
                   </span>
                   <Icons.Clock className={cn("w-3 h-3", isActive ? "opacity-100" : "opacity-30")} />

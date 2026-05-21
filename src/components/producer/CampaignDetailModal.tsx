@@ -56,7 +56,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
               </div>
               <div className="flex flex-col gap-1">
                  <div className="flex items-center gap-3">
-                   <h3 className="text-4xl font-black text-brand-primary tracking-tighter lowercase leading-none">
+                   <h3 className="text-4xl font-black text-brand-primary tracking-normal lowercase leading-none">
                      {campaign.name || "unnamed_production"}
                    </h3>
                    <div className={cn(
@@ -105,7 +105,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
                        <Icons.Image className="w-5 h-5 text-slate-400" />
                     </div>
                     <div className="flex flex-col">
-                       <h4 className="text-lg font-black text-brand-primary tracking-tighter lowercase leading-none">visual assets_matrix</h4>
+                       <h4 className="text-lg font-black text-brand-primary tracking-normal lowercase leading-none">visual assets_matrix</h4>
                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-300 mt-1.5">AI Generated Sequence</span>
                     </div>
                   </div>
@@ -162,14 +162,14 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
                        <Icons.Success className="w-5 h-5 text-slate-400" />
                     </div>
                     <div className="flex flex-col">
-                       <h4 className="text-lg font-black text-brand-primary tracking-tighter lowercase leading-none">audited_performance</h4>
+                       <h4 className="text-lg font-black text-brand-primary tracking-normal lowercase leading-none">audited_performance</h4>
                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-300 mt-1.5">Neural Quality Assessment</span>
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-6">
                     <div className="relative h-40 flex flex-col items-center justify-center">
-                       <div className="text-6xl font-black text-brand-primary tracking-tighter tabular-nums drop-shadow-sm">
+                       <div className="text-6xl font-black text-brand-primary tracking-normal tabular-nums drop-shadow-sm">
                          {Math.round((quality.overall_score || 0) * 100)}
                        </div>
                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">composite score</span>
@@ -206,7 +206,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
                        <Icons.Mic className="w-5 h-5 text-slate-400" />
                     </div>
                     <div className="flex flex-col">
-                       <h4 className="text-lg font-black text-brand-primary tracking-tighter lowercase leading-none">narrative_thread</h4>
+                       <h4 className="text-lg font-black text-brand-primary tracking-normal lowercase leading-none">narrative_thread</h4>
                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-300 mt-1.5">Voiceover Script & Dynamic Overlays</span>
                     </div>
                   </div>
@@ -244,7 +244,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
                      <Icons.Activity className="w-5 h-5 text-white/80" />
                   </div>
                   <div className="flex flex-col">
-                     <h4 className="text-lg font-black tracking-tighter lowercase leading-none">orchestration_thread</h4>
+                     <h4 className="text-lg font-black tracking-normal lowercase leading-none">orchestration_thread</h4>
                      <span className="text-[10px] font-black uppercase tracking-widest text-white/40 mt-1.5">Real-time Node Status</span>
                   </div>
                 </div>
@@ -299,7 +299,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
                        <Icons.PenLine className="w-5 h-5 text-slate-400" />
                     </div>
                     <div className="flex flex-col">
-                       <h4 className="text-lg font-black text-brand-primary tracking-tighter lowercase leading-none">implementation_intel</h4>
+                       <h4 className="text-lg font-black text-brand-primary tracking-normal lowercase leading-none">implementation_intel</h4>
                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-300 mt-1.5">Creative Objective Matrix</span>
                     </div>
                   </div>

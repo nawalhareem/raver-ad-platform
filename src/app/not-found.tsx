@@ -11,7 +11,7 @@ export default function NotFound() {
       <div className="z-10 max-w-2xl w-full flex flex-col items-center text-center space-y-8 animate-fade-in">
         {/* Error Code */}
         <div className="relative">
-          <h2 className="text-[180px] md:text-[220px] font-bold leading-none tracking-tighter text-text-primary/10 select-none">
+          <h2 className="text-[180px] md:text-[220px] font-bold leading-none tracking-normal text-text-primary/10 select-none">
             404
           </h2>
           <div className="absolute inset-0 flex items-center justify-center">

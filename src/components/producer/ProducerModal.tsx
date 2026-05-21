@@ -57,7 +57,7 @@ export function ProducerModal({
                  {hasLaunched ? <Icons.Activity className="w-7 h-7 text-brand-primary" /> : <Icons.Rocket className="w-7 h-7 text-white" />}
               </div>
               <div className="flex flex-col">
-                 <h3 className="text-3xl font-black text-brand-primary tracking-tighter lowercase leading-none">
+                 <h3 className="text-3xl font-black text-brand-primary tracking-normal lowercase leading-none">
                    {hasLaunched ? "Live Orchestration" : "Orchestration Suite"}
                  </h3>
                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-2 flex items-center gap-2">
@@ -93,7 +93,7 @@ export function ProducerModal({
                   <div className="p-8 bg-linear-to-r from-brand-primary to-brand-secondary rounded-[32px] border border-white/10 flex items-center justify-between">
                      <div className="flex flex-col gap-1">
                         <span className="text-[10px] font-black uppercase text-white/40 tracking-widest">Active Thread ID</span>
-                        <span className="text-xl font-black text-white tracking-tighter">{activeCampaign?.id || "Initializing Matrix..."}</span>
+                        <span className="text-xl font-black text-white tracking-normal">{activeCampaign?.id || "Initializing Matrix..."}</span>
                      </div>
                      <button 
                        onClick={onClose}

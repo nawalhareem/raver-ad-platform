@@ -232,7 +232,7 @@ export function QualityAuditModal({ isOpen, onClose, onRefresh, candidate }: Qua
                     <Icons.Files className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-brand-primary tracking-tighter">Candidate Ad Script</h3>
+                    <h3 className="text-xl font-black text-brand-primary tracking-normal">Candidate Ad Script</h3>
                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Neural Linguistic Output v1.5</p>
                   </div>
                 </div>
@@ -271,7 +271,7 @@ export function QualityAuditModal({ isOpen, onClose, onRefresh, candidate }: Qua
               <Icons.ShieldCheck className="w-7 h-7 text-white" />
             </div>
             <div className="flex flex-col">
-              <h2 className="text-2xl font-black text-brand-primary tracking-tighter lowercase leading-tight">{label}</h2>
+              <h2 className="text-2xl font-black text-brand-primary tracking-normal lowercase leading-tight">{label}</h2>
               <div className="flex items-center gap-3">
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Archival Audit Mode</span>
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -301,7 +301,7 @@ export function QualityAuditModal({ isOpen, onClose, onRefresh, candidate }: Qua
                          <Icons.Activity className="w-5 h-5 text-brand-primary" />
                       </div>
                       <div className="flex flex-col">
-                         <span className="text-[11px] font-black text-brand-primary uppercase tracking-tighter">Candidate Integrity Analysis</span>
+                         <span className="text-[11px] font-black text-brand-primary uppercase tracking-normal">Candidate Integrity Analysis</span>
                          <span className="text-[10px] text-slate-400 font-bold">Neural weight distribution matches branch signature.</span>
                       </div>
                    </div>

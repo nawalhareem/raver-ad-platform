@@ -49,7 +49,7 @@ export function LiveProductionTracker({
         </div>
       </div>
       <div className="flex flex-col gap-2 max-w-[260px] relative z-10">
-        <h3 className="text-xl font-black text-[#0A0A0A] tracking-tighter lowercase leading-none">dormant production pipeline</h3>
+        <h3 className="text-xl font-black text-[#0A0A0A] tracking-normal lowercase leading-none">dormant production pipeline</h3>
         <p className="text-sm text-slate-400 font-bold leading-relaxed">Launch an orchestration brief to ignite the neural production thread.</p>
       </div>
     </div>
@@ -75,7 +75,7 @@ export function LiveProductionTracker({
           </div>
         </div>
         <div className="flex flex-col items-end gap-1 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
-          <span className="text-[9px] font-black uppercase text-slate-400 tracking-tighter">campaign_id</span>
+          <span className="text-[9px] font-black uppercase text-slate-400 tracking-normal">campaign_id</span>
           <span className="text-[10px] font-mono font-black text-brand-primary truncate max-w-[100px]">{campaignId}</span>
         </div>
       </div>
@@ -137,7 +137,7 @@ export function LiveProductionTracker({
                     </div>
                   </div>
                   {step.metadata && isRunning && (
-                    <p className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-tighter">{step.metadata}</p>
+                    <p className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-normal">{step.metadata}</p>
                   )}
                 </div>
               </div>

@@ -112,7 +112,7 @@ export default function CampaignDetailPage() {
           <div className="w-20 h-20 bg-slate-50 rounded-[32px] flex items-center justify-center border border-slate-100 mb-4">
             <Icons.Activity className="w-10 h-10 text-slate-300" />
           </div>
-          <h2 className="text-2xl font-black text-brand-primary tracking-tighter lowercase">{error || "Production Not Sourced"}</h2>
+          <h2 className="text-2xl font-black text-brand-primary tracking-normal lowercase">{error || "Production Not Sourced"}</h2>
           <button
             onClick={() => router.push("/agents/producer")}
             className="h-12 px-8 bg-linear-to-r from-brand-primary to-brand-secondary  text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-brand-primary/10 active:scale-95 transition-all"
@@ -289,7 +289,7 @@ export default function CampaignDetailPage() {
             </button>
             <div className="flex flex-col gap-1 overflow-hidden">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 overflow-hidden">
-                <h1 className="text-[20px] sm:text-[28px] md:text-[32px] font-black text-[#121212] tracking-tighter  leading-tight truncate">
+                <h1 className="text-[20px] sm:text-[28px] md:text-[32px] font-black text-[#121212] tracking-normal  leading-tight truncate">
                   {campaignName}
                 </h1>
                 <div className={cn(
@@ -354,7 +354,7 @@ export default function CampaignDetailPage() {
                       <Icons.Zap className="w-8 h-8 text-white" />
                     </div>
                     <div className="flex flex-col">
-                      <h2 className="text-2xl font-black text-brand-primary tracking-tighter lowercase">Human Intervention Required</h2>
+                      <h2 className="text-2xl font-black text-brand-primary tracking-normal lowercase">Human Intervention Required</h2>
                       <p className="text-[11px] font-black uppercase tracking-widest text-amber-600 mt-1">Reviewing: {campaign.status.replace("awaiting_approval_", "").replace("_", " ")}</p>
                     </div>
                   </div>
@@ -500,7 +500,7 @@ export default function CampaignDetailPage() {
                           </div>
                           <div className="flex flex-col">
                             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary/40">Neural Voice Generation</span>
-                            <h4 className="text-lg font-black text-brand-primary tracking-tighter lowercase">Review Master Voiceover</h4>
+                            <h4 className="text-lg font-black text-brand-primary tracking-normal lowercase">Review Master Voiceover</h4>
                           </div>
                         </div>
                         
@@ -552,7 +552,7 @@ export default function CampaignDetailPage() {
                           </div>
                           <div className="flex flex-col">
                             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary/40">Neural Composition</span>
-                            <h4 className="text-lg font-black text-brand-primary tracking-tighter lowercase">Review Background Score</h4>
+                            <h4 className="text-lg font-black text-brand-primary tracking-normal lowercase">Review Background Score</h4>
                           </div>
                         </div>
                         
@@ -598,7 +598,7 @@ export default function CampaignDetailPage() {
                           </div>
                           <div className="flex flex-col">
                             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary/40">Production Finalization</span>
-                            <h4 className="text-lg font-black text-brand-primary tracking-tighter lowercase">Review Master Render</h4>
+                            <h4 className="text-lg font-black text-brand-primary tracking-normal lowercase">Review Master Render</h4>
                           </div>
                         </div>
                         
@@ -679,7 +679,7 @@ export default function CampaignDetailPage() {
                       <div className="w-2 h-2 sm:w-8 sm:h-8 rounded-full bg-emerald-500 sm:animate-pulse" />
                       <span className="text-[10px] sm:text-[12px] font-black uppercase tracking-widest sm:tracking-[0.4em] text-white/70">Master Production</span>
                     </div>
-                    <h2 className="text-[16px] sm:text-[24px] md:text-[32px] font-black text-white tracking-tighter lowercase leading-none mt-1 shadow-black/20 drop-shadow-lg">Production Synthesis</h2>
+                    <h2 className="text-[16px] sm:text-[24px] md:text-[32px] font-black text-white tracking-normal lowercase leading-none mt-1 shadow-black/20 drop-shadow-lg">Production Synthesis</h2>
                   </div>
 
                   <div className="flex gap-2 sm:gap-4 pointer-events-auto">
@@ -739,7 +739,7 @@ export default function CampaignDetailPage() {
                       <Icons.Activity className="w-8 h-8 text-red-500" />
                     </div>
                     <div className="flex flex-col gap-2">
-                       <h3 className="text-xl font-black text-red-600 tracking-tighter lowercase">Neural Rendering Failed</h3>
+                       <h3 className="text-xl font-black text-red-600 tracking-normal lowercase">Neural Rendering Failed</h3>
                        <p className="text-sm text-slate-400 font-bold max-w-md">
                          {nodes.render?.result?.error || "The synthesis matrix encountered a timeout or resource allocation error during final rendering."}
                        </p>
@@ -757,7 +757,7 @@ export default function CampaignDetailPage() {
                       <Icons.Loader className="w-8 h-8 text-slate-300 animate-spin" />
                     </div>
                     <div className="flex flex-col gap-2">
-                       <h3 className="text-xl font-black text-slate-600 tracking-tighter lowercase">Rendering in Progress</h3>
+                       <h3 className="text-xl font-black text-slate-600 tracking-normal lowercase">Rendering in Progress</h3>
                        <p className="text-sm text-slate-400 font-bold">The master video is currently being synthesized in the visual matrix.</p>
                     </div>
                   </>
@@ -775,7 +775,7 @@ export default function CampaignDetailPage() {
                     <Icons.Image className="w-5 h-5 md:w-6 md:h-6 text-brand-primary" />
                   </div>
                   <div className="flex flex-col overflow-hidden">
-                    <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-tighter lowercase leading-none truncate">visual assets_matrix</h4>
+                    <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-normal lowercase leading-none truncate">visual assets_matrix</h4>
                     <span className="text-[10px] md:text-[11px] font-black uppercase tracking-widest text-slate-300 mt-2 truncate">Neural Sequence</span>
                   </div>
                 </div>
@@ -821,7 +821,7 @@ export default function CampaignDetailPage() {
               <div className="col-span-12 lg:col-span-4 flex flex-col gap-6 md:gap-10">
                 {/* Neural Thread */}
                 <div className="bg-linear-to-br from-brand-primary to-brand-secondary rounded-[32px] md:rounded-[40px] p-8 md:p-10 text-white shadow-2xl shadow-brand-primary/10 relative overflow-hidden group">
-                  <h4 className="text-lg md:text-xl font-black tracking-tighter lowercase leading-none mb-8 md:mb-10 relative z-10 flex items-center gap-3">
+                  <h4 className="text-lg md:text-xl font-black tracking-normal lowercase leading-none mb-8 md:mb-10 relative z-10 flex items-center gap-3">
                     <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
                     orchestration_thread
                   </h4>
@@ -876,7 +876,7 @@ export default function CampaignDetailPage() {
                     <div className="w-10 h-10 bg-slate-50 rounded-[18px] flex items-center justify-center border border-slate-100">
                       <Icons.PenLine className="w-5 h-5 text-brand-primary" />
                     </div>
-                    <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-tighter lowercase leading-none truncate">intel_matrix</h4>
+                    <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-normal lowercase leading-none truncate">intel_matrix</h4>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-5 md:gap-y-6">
                     {[
@@ -907,7 +907,7 @@ export default function CampaignDetailPage() {
                       <div className="w-10 h-10 bg-slate-50 rounded-[18px] flex items-center justify-center border border-slate-100">
                         <Icons.MagicWand className="w-5 h-5 text-brand-primary" />
                       </div>
-                      <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-tighter lowercase leading-none">style_directive</h4>
+                      <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-normal lowercase leading-none">style_directive</h4>
                     </div>
                     <div className="p-6 bg-slate-50/50 rounded-[24px] border border-slate-100/50">
                        <p className="text-xs md:text-sm font-medium text-[#121212] leading-relaxed italic">
@@ -929,7 +929,7 @@ export default function CampaignDetailPage() {
                         <Icons.Mic className="w-5 h-5 md:w-6 md:h-6 text-brand-primary" />
                       </div>
                       <div className="flex flex-col">
-                        <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-tighter lowercase leading-none">narrative_synthesis</h4>
+                        <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-normal lowercase leading-none">narrative_synthesis</h4>
                          <span className="text-xs font-black uppercase tracking-widest text-slate-300 mt-2">Script & Overlay Coordination</span>
                       </div>
                     </div>
@@ -973,12 +973,12 @@ export default function CampaignDetailPage() {
                                    </div>
                                    <div className="flex flex-col gap-3">
                                       <div>
-                                         <span className="text-xs font-black uppercase text-slate-300 tracking-tighter">Audio Stream</span>
+                                         <span className="text-xs font-black uppercase text-slate-300 tracking-normal">Audio Stream</span>
                                          <p className="text-sm font-medium text-[#4F4F4F] leading-relaxed mt-1 italic">"{text}"</p>
                                       </div>
                                       {overlay && (
                                          <div className="p-3 bg-slate-50 rounded-xl border border-slate-100/50">
-                                            <span className="text-xs font-black uppercase text-blue-500 tracking-tighter">Video Overlay</span>
+                                            <span className="text-xs font-black uppercase text-blue-500 tracking-normal">Video Overlay</span>
                                             <p className="text-sm font-black text-brand-primary mt-1">{overlay.text}</p>
                                          </div>
                                       )}
@@ -1002,7 +1002,7 @@ export default function CampaignDetailPage() {
                       <Icons.MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-brand-primary" />
                     </div>
                     <div className="flex flex-col">
-                      <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-tighter lowercase leading-none">social_architecture</h4>
+                      <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-normal lowercase leading-none">social_architecture</h4>
                        <span className="text-xs font-black uppercase tracking-widest text-brand-primary/40 mt-1">{platform} | Platform Fit Optimized</span>
                     </div>
                   </div>
@@ -1069,12 +1069,12 @@ export default function CampaignDetailPage() {
                       <Icons.Success className="w-5 h-5 md:w-6 md:h-6 text-emerald-600" />
                     </div>
                     <div className="flex flex-col">
-                      <h4 className="text-base sm:text-lg md:text-xl font-black text-brand-primary tracking-tighter lowercase leading-none">dimension_breakdown</h4>
+                      <h4 className="text-base sm:text-lg md:text-xl font-black text-brand-primary tracking-normal lowercase leading-none">dimension_breakdown</h4>
                        <span className="text-xs font-black uppercase tracking-widest text-slate-400 mt-1 sm:mt-2">Weighted Audit Results</span>
                     </div>
                   </div>
                   <div className="flex items-center sm:items-end flex-row sm:flex-col justify-between sm:justify-start">
-                    <span className="text-2xl sm:text-3xl md:text-4xl font-black text-brand-primary tracking-tighter tabular-nums">{Math.round((quality.overall_score || 0) * 100)}%</span>
+                    <span className="text-2xl sm:text-3xl md:text-4xl font-black text-brand-primary tracking-normal tabular-nums">{Math.round((quality.overall_score || 0) * 100)}%</span>
                   </div>
                 </div>
 
@@ -1116,7 +1116,7 @@ export default function CampaignDetailPage() {
                     <div className="w-10 h-10 bg-slate-50 rounded-[18px] flex items-center justify-center border border-slate-100">
                       <Icons.Shield className="w-5 h-5 text-brand-primary" />
                     </div>
-                    <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-tighter lowercase leading-none">auditing_agents</h4>
+                    <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-normal lowercase leading-none">auditing_agents</h4>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {quality.evaluator_models?.map((model: string, idx: number) => (
@@ -1132,7 +1132,7 @@ export default function CampaignDetailPage() {
                     <div className="w-10 h-10 bg-slate-50 rounded-[18px] flex items-center justify-center border border-slate-100">
                       <Icons.Rocket className="w-5 h-5 text-brand-primary" />
                     </div>
-                    <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-tighter lowercase leading-none truncate">master_assets</h4>
+                    <h4 className="text-lg md:text-xl font-black text-brand-primary tracking-normal lowercase leading-none truncate">master_assets</h4>
                   </div>
                   <div className="flex flex-col gap-4">
                     {result.video_url && <AssetLink label="Video Render" url={result.video_url} icon={Icons.Video} />}

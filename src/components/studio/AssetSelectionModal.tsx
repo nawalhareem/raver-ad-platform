@@ -251,7 +251,7 @@ export default function AssetSelectionModal({
 
                       {/* Metadata */}
                       <div className="absolute bottom-0 left-0 right-0 p-2 bg-linear-to-t from-black/60 to-transparent">
-                        <p className="text-[10px] font-bold text-white uppercase truncate tracking-tighter">{asset.name}</p>
+                        <p className="text-[10px] font-bold text-white uppercase truncate tracking-normal">{asset.name}</p>
                       </div>
                     </div>
                   );

@@ -32,7 +32,7 @@ export function EditorModal({ isOpen, onClose, onGenerate, isLoading }: EditorMo
               <Icons.Rocket className="w-6 h-6 text-white" />
             </div>
             <div className="flex flex-col">
-              <h2 className="text-xl font-black text-brand-primary tracking-tighter lowercase leading-tight">Initiate Neural Synthesis</h2>
+              <h2 className="text-xl font-black text-brand-primary tracking-normal lowercase leading-tight">Initiate Neural Synthesis</h2>
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Orchestrating Platform-Ready Visual Campaigns</p>
             </div>
           </div>

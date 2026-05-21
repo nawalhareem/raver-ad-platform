@@ -140,7 +140,7 @@ export default function QualityLeadPage() {
               <Icons.ArrowLeft className="w-5 h-5 text-brand-primary group-hover:-translate-x-0.5 transition-transform" />
             </Link>
             <div className="flex flex-col">
-               <h1 className="text-[34px] font-black text-brand-primary tracking-tighter lowercase leading-none">RAVER QUALITY LEAD</h1>
+               <h1 className="text-[34px] font-black text-brand-primary tracking-normal lowercase leading-none">RAVER QUALITY LEAD</h1>
                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary/30 mt-3">Neural Integrity & Brand Alignment Governance</p>
             </div>
           </div>

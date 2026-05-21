@@ -47,7 +47,7 @@ export function QualityCandidates({ candidates, isLoading, onAudit }: QualityCan
            <Icons.Activity className="w-8 h-8 text-brand-primary/20" />
         </div>
         <div className="text-center">
-           <h3 className="text-lg font-black text-brand-primary tracking-tighter lowercase">Synchronizing Neural Archives...</h3>
+           <h3 className="text-lg font-black text-brand-primary tracking-normal lowercase">Synchronizing Neural Archives...</h3>
            <p className="text-sm text-slate-400 font-bold">Accessing candidate pools across all specialist agents.</p>
         </div>
       </div>
@@ -120,7 +120,7 @@ export function QualityCandidates({ candidates, isLoading, onAudit }: QualityCan
         <div className="bg-slate-50 border border-dashed border-slate-200 rounded-[32px] py-20 flex flex-col items-center justify-center gap-4">
            <Icons.Filter className="w-10 h-10 text-slate-200" />
            <div className="text-center">
-             <h3 className="text-[16px] font-black text-brand-primary tracking-tighter lowercase">No candidates in this category_</h3>
+             <h3 className="text-[16px] font-black text-brand-primary tracking-normal lowercase">No candidates in this category_</h3>
              <p className="text-sm text-slate-400 font-bold">Try adjusting your filters or initiate new synthesis tasks.</p>
            </div>
         </div>

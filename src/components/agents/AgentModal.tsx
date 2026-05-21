@@ -59,7 +59,7 @@ export default function AgentModal({ agent, isOpen, onClose, onAction }: AgentMo
         <div className="flex-1 overflow-y-auto custom-scrollbar px-1">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <h2 className="text-[22px] sm:text-[24px] font-black text-brand-primary tracking-tighter lowercase">{agent.name}</h2>
+              <h2 className="text-[22px] sm:text-[24px] font-black text-brand-primary tracking-normal lowercase">{agent.name}</h2>
               <span className="text-[12px] sm:text-[14px] font-bold text-slate-400 uppercase tracking-widest leading-none">{agent.role}</span>
             </div>
 
