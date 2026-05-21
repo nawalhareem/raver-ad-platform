@@ -40,8 +40,8 @@
   --color-border-subtle: var(--card-border);
 
   /* Tracking / Letter Spacing overrides */
-  --tracking-tighter: -0.005em;
-  --tracking-tight: 0.01em;
+  --tracking-tighter: 0.02em;
+  --tracking-tight: 0.035em;
 }
 
 :root {
