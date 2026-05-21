@@ -170,11 +170,11 @@ export function AudioGenerator({
                     onChange={(e) => updateField("tone", e.target.value)}
                     className="w-full h-14 bg-white border border-slate-100 rounded-[20px] px-6 text-sm font-bold text-brand-primary transition-all outline-none active:scale-[0.98]"
                   >
-                    <option value="elegant">Elegant & Sophisticated</option>
-                    <option value="luxury">Luxury & Premium</option>
-                    <option value="energetic">Energetic & Dynamic</option>
-                    <option value="ambient">Ambient & Relaxing</option>
-                    <option value="cinematic">Cinematic & Narrative</option>
+                    <option value="elegant" className="text-slate-900 bg-white">Elegant & Sophisticated</option>
+                    <option value="luxury" className="text-slate-900 bg-white">Luxury & Premium</option>
+                    <option value="energetic" className="text-slate-900 bg-white">Energetic & Dynamic</option>
+                    <option value="ambient" className="text-slate-900 bg-white">Ambient & Relaxing</option>
+                    <option value="cinematic" className="text-slate-900 bg-white">Cinematic & Narrative</option>
                   </select>
                 </div>
                 <div className="flex flex-col gap-4">

@@ -226,7 +226,12 @@ export function VoiceSelector({ selectedVoice, onSelect, className, isDark }: Vo
              {isMale ? <Icons.Mic className="w-4 h-4 text-blue-500" /> : <Icons.Mic className="w-4 h-4 text-pink-500" />}
           </div>
           <div className="flex flex-col items-start overflow-hidden">
-             <span className="text-sm font-black text-brand-primary truncate tracking-tight">{currentVoice.name}</span>
+             <span className={cn(
+               "text-sm font-black truncate tracking-tight",
+               isDark ? "text-white" : "text-brand-primary"
+             )}>
+               {currentVoice.name}
+             </span>
              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter truncate">{currentVoice.accent} • {currentVoice.category}</span>
           </div>
         </div>

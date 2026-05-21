@@ -38,6 +38,10 @@
   
   /* Semantic Borders */
   --color-border-subtle: var(--card-border);
+
+  /* Tracking / Letter Spacing overrides */
+  --tracking-tighter: -0.015em;
+  --tracking-tight: -0.005em;
 }
 
 :root {

@@ -130,12 +130,12 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                 <select 
                   value={mood}
                   onChange={(e) => setMood(e.target.value)}
-                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none font-medium appearance-none cursor-pointer"
+                  className="w-full bg-white text-slate-900 border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none font-medium appearance-none cursor-pointer"
                 >
-                  <option value="cinematic">Cinematic</option>
-                  <option value="minimalist">Minimalist</option>
-                  <option value="dynamic">Dynamic</option>
-                  <option value="luxury">Luxury</option>
+                  <option value="cinematic" className="text-slate-900 bg-white">Cinematic</option>
+                  <option value="minimalist" className="text-slate-900 bg-white">Minimalist</option>
+                  <option value="dynamic" className="text-slate-900 bg-white">Dynamic</option>
+                  <option value="luxury" className="text-slate-900 bg-white">Luxury</option>
                 </select>
               </div>
               <div className="flex flex-col gap-2">
@@ -143,11 +143,11 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                 <select 
                   value={brandTone}
                   onChange={(e) => setBrandTone(e.target.value)}
-                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none font-medium appearance-none cursor-pointer"
+                  className="w-full bg-white text-slate-900 border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none font-medium appearance-none cursor-pointer"
                 >
-                  <option value="bold">Bold & High Energy</option>
-                  <option value="minimal">Quiet Luxury</option>
-                  <option value="friendly">Engaging / Friendly</option>
+                  <option value="bold" className="text-slate-900 bg-white">Bold & High Energy</option>
+                  <option value="minimal" className="text-slate-900 bg-white">Quiet Luxury</option>
+                  <option value="friendly" className="text-slate-900 bg-white">Engaging / Friendly</option>
                 </select>
               </div>
            </div>
@@ -255,9 +255,9 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                  onChange={(e) => setVideoModel(e.target.value)}
                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-black uppercase tracking-widest outline-none cursor-pointer hover:bg-white/10 transition-colors focus:ring-2 focus:ring-white/20"
                >
-                 <option value="kling-video" className="bg-[#01012A] text-white">Kling-Video-Neo</option>
-                 <option value="seedance" className="bg-[#01012A] text-white">Seedance Synthesis</option>
-                 <option value="ltx-video" className="bg-[#01012A] text-white">LTX-High-Fidelity</option>
+                 <option value="kling-video" className="text-slate-900 bg-white">Kling-Video-Neo</option>
+                 <option value="seedance" className="text-slate-900 bg-white">Seedance Synthesis</option>
+                 <option value="ltx-video" className="text-slate-900 bg-white">LTX-High-Fidelity</option>
                </select>
             </div>
          </div>

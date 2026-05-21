@@ -303,15 +303,15 @@ export function RaverEditor({ onGenerate, isLoading }: VideoGeneratorProps) {
                  <div className="space-y-4 pt-4 border-t border-white/5">
                    <div className="text-xs font-black uppercase tracking-widest text-purple-400/80">Cinematic Transitions</div>
                    <div className="grid grid-cols-2 gap-2">
-                     <select 
-                       value={transition}
-                       onChange={(e) => setTransition(e.target.value)}
-                       className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-white/20 transition-all font-medium appearance-none"
-                     >
-                       <option value="fade">Cross Fade</option>
-                       <option value="dissolve">Film Dissolve</option>
-                       <option value="none">Cut (None)</option>
-                     </select>
+                      <select 
+                        value={transition}
+                        onChange={(e) => setTransition(e.target.value)}
+                        className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/20 transition-all font-medium appearance-none"
+                      >
+                        <option value="fade" className="text-slate-900 bg-white">Cross Fade</option>
+                        <option value="dissolve" className="text-slate-900 bg-white">Film Dissolve</option>
+                        <option value="none" className="text-slate-900 bg-white">Cut (None)</option>
+                      </select>
                      <input 
                         type="number"
                         step="0.1"
@@ -326,15 +326,15 @@ export function RaverEditor({ onGenerate, isLoading }: VideoGeneratorProps) {
                 {/* Engine Settings */}
                  <div className="space-y-4 pt-4 border-t border-white/5">
                    <div className="text-xs font-black uppercase tracking-widest text-amber-400/80">Animation Engine</div>
-                   <select 
-                     value={video_model}
-                     onChange={(e) => setVideoModel(e.target.value)}
-                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-white/20 transition-all font-medium appearance-none"
-                   >
-                     <option value="kling-video">Kling Video (Recommended)</option>
-                     <option value="luma-dream">Luma Dream Machine</option>
-                     <option value="runway-gen3">Runway Gen-3 Alpha</option>
-                   </select>
+                    <select 
+                      value={video_model}
+                      onChange={(e) => setVideoModel(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/20 transition-all font-medium appearance-none"
+                    >
+                      <option value="kling-video" className="text-slate-900 bg-white">Kling Video (Recommended)</option>
+                      <option value="luma-dream" className="text-slate-900 bg-white">Luma Dream Machine</option>
+                      <option value="runway-gen3" className="text-slate-900 bg-white">Runway Gen-3 Alpha</option>
+                    </select>
                  </div>
 
                 <button

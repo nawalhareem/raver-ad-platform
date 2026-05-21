@@ -126,12 +126,12 @@ export function CopyGenerator({ onGenerate, isLoading }: CopyGeneratorProps) {
               <label className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Brand Voice / Tone</label>
               <div className="relative">
                 <select
-                  className="w-full h-14 sm:h-16 bg-slate-50/50 border border-slate-100 rounded-xl sm:rounded-[24px] px-5 sm:px-6 text-[12px] sm:text-[13px] font-bold focus:bg-white focus:border-brand-primary transition-all outline-none appearance-none cursor-pointer"
+                  className="w-full h-14 sm:h-16 bg-slate-50/50 border border-slate-100 rounded-xl sm:rounded-[24px] px-5 sm:px-6 text-[12px] sm:text-[13px] font-bold text-slate-900 focus:bg-white focus:border-brand-primary transition-all outline-none appearance-none cursor-pointer"
                   value={formData.tone}
                   onChange={(e) => handleInputChange("tone", e.target.value)}
                 >
                   {TONES.map(t => (
-                    <option key={t} value={t}>{t}</option>
+                    <option key={t} value={t} className="text-slate-900 bg-white">{t}</option>
                   ))}
                 </select>
                 <Icons.ChevronDown className="absolute right-5 sm:right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 pointer-events-none" />
@@ -161,12 +161,12 @@ export function CopyGenerator({ onGenerate, isLoading }: CopyGeneratorProps) {
                 <label className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Platform</label>
                 <div className="relative">
                   <select
-                    className="w-full h-14 sm:h-16 bg-slate-50/50 border border-slate-100 rounded-xl sm:rounded-[24px] px-5 sm:px-6 text-[12px] sm:text-[13px] font-bold focus:bg-white focus:border-brand-primary transition-all outline-none appearance-none cursor-pointer"
+                    className="w-full h-14 sm:h-16 bg-slate-50/50 border border-slate-100 rounded-xl sm:rounded-[24px] px-5 sm:px-6 text-[12px] sm:text-[13px] font-bold text-slate-900 focus:bg-white focus:border-brand-primary transition-all outline-none appearance-none cursor-pointer"
                     value={formData.platform}
                     onChange={(e) => handleInputChange("platform", e.target.value)}
                   >
                     {PLATFORMS.map(p => (
-                      <option key={p} value={p}>{p}</option>
+                      <option key={p} value={p} className="text-slate-900 bg-white">{p}</option>
                     ))}
                   </select>
                   <Icons.ChevronDown className="absolute right-5 sm:right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 pointer-events-none" />
