@@ -40,8 +40,8 @@
   --color-border-subtle: var(--card-border);
 
   /* Tracking / Letter Spacing overrides */
-  --tracking-tighter: -0.015em;
-  --tracking-tight: -0.005em;
+  --tracking-tighter: -0.005em;
+  --tracking-tight: 0.01em;
 }
 
 :root {
@@ -99,17 +99,17 @@ input[type="radio"]:disabled,
 
 @layer utilities {
   .text-h1 {
-    @apply text-h1 font-bold tracking-tight;
+    @apply text-h1 font-bold tracking-normal;
     font-family: var(--font-outfit), var(--font-sans);
   }
 
   .text-h2 {
-    @apply text-h2 font-bold tracking-tight;
+    @apply text-h2 font-bold tracking-normal;
     font-family: var(--font-outfit), var(--font-sans);
   }
 
   .text-h3 {
-    @apply text-h3 font-bold tracking-tight;
+    @apply text-h3 font-bold tracking-normal;
     font-family: var(--font-outfit), var(--font-sans);
   }
 
