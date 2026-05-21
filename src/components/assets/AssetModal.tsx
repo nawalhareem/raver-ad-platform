@@ -32,6 +32,14 @@ interface AssetModalProps {
 export default function AssetModal({ asset, isOpen, onClose, onDelete }: AssetModalProps) {
   const [isMuted, setIsMuted] = React.useState(true);
   const [videoError, setVideoError] = React.useState(false);
+  const assetUrl = asset ? (asset.url || asset.imagePath || "") : "";
+  const [imgSrc, setImgSrc] = React.useState("");
+
+  React.useEffect(() => {
+    if (assetUrl) {
+      setImgSrc(normalizeAssetUrl(assetUrl));
+    }
+  }, [assetUrl]);
   
   if (!isOpen || !asset) return null;
 
@@ -50,7 +58,6 @@ export default function AssetModal({ asset, isOpen, onClose, onDelete }: AssetMo
     document.body.removeChild(link);
   };
 
-  const assetUrl = asset.url || asset.imagePath || "";
   const isVideo = asset.type === "video" || 
     assetUrl.toLowerCase().split('?')[0].endsWith(".mp4") || 
     assetUrl.toLowerCase().split('?')[0].endsWith(".webm") || 
@@ -128,13 +135,12 @@ export default function AssetModal({ asset, isOpen, onClose, onDelete }: AssetMo
             </div>
           ) : (
             <Image 
-              src={normalizeAssetUrl(assetUrl)} 
+              src={imgSrc || normalizeAssetUrl(assetUrl)} 
               alt={asset.name || asset.title || "Asset"}
               fill
               className="object-contain p-8"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = "https://placehold.co/800x600?text=Asset";
+              onError={() => {
+                setImgSrc("https://placehold.co/800x600?text=Asset");
               }}
             />
           )}

@@ -12,6 +12,13 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: '**.amazonaws.com' },
       { protocol: 'https', hostname: 'v3b.fal.media' },
       { protocol: 'https', hostname: '**.fal.media' },
+      { protocol: 'http', hostname: 'localhost' },
+      { protocol: 'https', hostname: 'localhost' },
+      { protocol: 'http', hostname: '127.0.0.1' },
+      { protocol: 'https', hostname: '127.0.0.1' },
+      { protocol: 'https', hostname: 'kamala-helminthologic-gladys.ngrok-free.dev' },
+      { protocol: 'https', hostname: '**.ngrok-free.dev' },
+      { protocol: 'https', hostname: 'placehold.co' },
     ],
   },
 };

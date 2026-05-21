@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { Icons } from "@/components/ui/icons";
-import { cn, formatFileSize } from "@/lib/utils";
+import { cn, formatFileSize, normalizeAssetUrl } from "@/lib/utils";
 
 interface AssetCardProps {
   title: string;
@@ -41,6 +41,13 @@ export default function AssetCard({
   const [isMuted, setIsMuted] = React.useState(true);
   const [videoError, setVideoError] = React.useState(false);
   const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [imgSrc, setImgSrc] = React.useState("");
+
+  React.useEffect(() => {
+    if (imagePath) {
+      setImgSrc(normalizeAssetUrl(imagePath));
+    }
+  }, [imagePath]);
   
   const aspectClasses = {
     portrait: "aspect-3/4",
@@ -127,16 +134,16 @@ export default function AssetCard({
                 <span className="text-xs font-black uppercase tracking-widest text-center">Video Unavailable</span>
              </div>
            ) : (
-             <video 
-              ref={videoRef}
-              src={imagePath} 
-              muted={isMuted} 
-              autoPlay
-              loop
-              playsInline
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-              onError={() => setVideoError(true)}
-            />
+              <video 
+               ref={videoRef}
+               src={normalizeAssetUrl(imagePath)} 
+               muted={isMuted} 
+               autoPlay
+               loop
+               playsInline
+               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+               onError={() => setVideoError(true)}
+             />
           )}
           <div className="absolute top-4 left-4 z-10">
              <div className="flex items-center gap-2 px-3 py-1.5 bg-black/60 backdrop-blur-md rounded-xl border border-white/10 shadow-lg">
@@ -158,13 +165,12 @@ export default function AssetCard({
       ) : (
         <>
           <Image 
-            src={imagePath} 
+            src={imgSrc || normalizeAssetUrl(imagePath)} 
             alt={title}
             fill
             className="object-cover transition-transform duration-1000 group-hover:scale-110"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = "https://placehold.co/600x800?text=Asset";
+            onError={() => {
+              setImgSrc("https://placehold.co/600x800?text=Asset");
             }}
           />
           <div className="absolute top-4 left-4 z-10">
