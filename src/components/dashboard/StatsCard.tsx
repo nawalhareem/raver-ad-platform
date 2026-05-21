@@ -10,6 +10,7 @@ interface StatsCardProps {
 }
 
 export default function StatsCard({ label, value, change, icon: Icon, trend = "up" }: StatsCardProps) {
+  const cleanedChange = change.replace(/^[+-]/, "");
   return (
     <div className="bg-[#F8F8F8] px-[21px] pt-[21px] rounded-[8px]  min-w-[230px] h-[98px] border-[0.35px] border-[#0000000D] flex flex-col gap-[8px] shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between">
@@ -21,7 +22,7 @@ export default function StatsCard({ label, value, change, icon: Icon, trend = "u
           "text-[12px] font-bold px-2 py-0.5 rounded-full bg-opacity-10",
           trend === "up" ? "text-[#02022C]" : "text-[#4F4F4F]"
            )}>
-          {trend === "up" ? "+" : "-"}{change}
+          {trend === "up" ? "+" : "-"}{cleanedChange}
         </span>
       </div>
     </div>

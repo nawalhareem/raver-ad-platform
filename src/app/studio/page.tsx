@@ -138,11 +138,19 @@ function CampaignInsights({ insights }: any) {
       <h2 className="text-[18px] font-bold text-[#121212]">Insights</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {insights.map((insight: any, i: number) => {
+          // Parse value to ensure it isn't negative if it's a number or contains a negative number
           let displayValue = insight.value;
           if (typeof displayValue === "number") {
             displayValue = Math.max(0, displayValue);
-          } else if (typeof displayValue === "string" && !isNaN(Number(displayValue))) {
-            displayValue = Math.max(0, Number(displayValue)).toString();
+          } else if (typeof displayValue === "string") {
+            const trimmed = displayValue.trim();
+            const negativeMatch = trimmed.match(/-\s*([$€£¥]?\s*\d+(?:\.\d+)?)/);
+            if (negativeMatch) {
+              const currency = negativeMatch[1].match(/[$€£¥]/)?.[0] || "";
+              displayValue = trimmed.replace(negativeMatch[0], currency + "0");
+            } else if (!isNaN(Number(trimmed))) {
+              displayValue = Math.max(0, Number(trimmed)).toString();
+            }
           }
 
           const hasPlus = insight.change?.includes("+");
