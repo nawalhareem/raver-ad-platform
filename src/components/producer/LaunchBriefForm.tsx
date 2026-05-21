@@ -78,7 +78,7 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="e.g. Aura Fragrance"
-                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary outline-none transition-all font-medium pr-12"
+                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none transition-all font-medium pr-12"
                 />
                 <Icons.Success className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-200 group-focus-within:text-brand-primary transition-colors" />
               </div>
@@ -90,7 +90,7 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                 value={productDescription}
                 onChange={(e) => setProductDescription(e.target.value)}
                 placeholder="Describe the product essence..."
-                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary outline-none transition-all font-medium min-h-[100px] resize-none"
+                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none transition-all font-medium min-h-[100px] resize-none"
               />
            </div>
 
@@ -100,7 +100,7 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                 value={targetAudience}
                 onChange={(e) => setTargetAudience(e.target.value)}
                 placeholder="e.g. Gen-Z Lifestyle Enthusiasts"
-                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary outline-none transition-all font-medium"
+                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none transition-all font-medium"
               />
            </div>
 
@@ -111,7 +111,7 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                   value={logoUrl}
                   onChange={(e) => setLogoUrl(e.target.value)}
                   placeholder="https://your-brand-asset.png"
-                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary outline-none transition-all font-medium"
+                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none transition-all font-medium"
                 />
               </div>
            </div>
@@ -130,7 +130,7 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                 <select 
                   value={mood}
                   onChange={(e) => setMood(e.target.value)}
-                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary outline-none font-medium appearance-none cursor-pointer"
+                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none font-medium appearance-none cursor-pointer"
                 >
                   <option value="cinematic">Cinematic</option>
                   <option value="minimalist">Minimalist</option>
@@ -143,7 +143,7 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                 <select 
                   value={brandTone}
                   onChange={(e) => setBrandTone(e.target.value)}
-                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary outline-none font-medium appearance-none cursor-pointer"
+                  className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 outline-none font-medium appearance-none cursor-pointer"
                 >
                   <option value="bold">Bold & High Energy</option>
                   <option value="minimal">Quiet Luxury</option>
@@ -253,11 +253,11 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                <select
                  value={videoModel}
                  onChange={(e) => setVideoModel(e.target.value)}
-                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-black uppercase tracking-widest outline-none cursor-pointer hover:bg-white/10 transition-colors"
+                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-black uppercase tracking-widest outline-none cursor-pointer hover:bg-white/10 transition-colors focus:ring-2 focus:ring-white/20"
                >
-                 <option value="kling-video" className="bg-linear-to-r from-brand-primary to-brand-secondary">Kling-Video-Neo</option>
-                 <option value="seedance" className="bg-linear-to-r from-brand-primary to-brand-secondary">Seedance Synthesis</option>
-                 <option value="ltx-video" className="bg-linear-to-r from-brand-primary to-brand-secondary">LTX-High-Fidelity</option>
+                 <option value="kling-video" className="bg-[#01012A] text-white">Kling-Video-Neo</option>
+                 <option value="seedance" className="bg-[#01012A] text-white">Seedance Synthesis</option>
+                 <option value="ltx-video" className="bg-[#01012A] text-white">LTX-High-Fidelity</option>
                </select>
             </div>
          </div>
@@ -328,7 +328,7 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
            className={cn(
              "w-full h-16 rounded-2xl font-black text-sm uppercase tracking-[0.3em] transition-all duration-500 shadow-xl flex items-center justify-center gap-4 relative z-10",
              (isLoading || !isFormValid)
-               ? "bg-white/5 text-white/20 cursor-not-allowed border-white/5"
+               ? "bg-white/10 text-white/30 cursor-not-allowed border border-white/10"
                : "bg-white text-brand-primary border hover:border-white hover:bg-linear-to-r hover:from-brand-primary hover:to-brand-secondary hover:text-white shadow-black/20 active:scale-[0.98]"
            )}
          >

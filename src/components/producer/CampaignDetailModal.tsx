@@ -41,7 +41,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
       {/* Backdrop */}
       <div 
         onClick={onClose}
-        className="absolute inset-0  backdrop-blur-xl transition-opacity animate-in fade-in duration-500" 
+        className="absolute inset-0 bg-[#01012A]/60 backdrop-blur-xl transition-opacity animate-in fade-in duration-500" 
       />
       
       {/* Modal Container */}
@@ -91,7 +91,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
         </div>
 
         {/* Modal Body Content */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar relative z-10 bg-slate-50/30 p-12">
+        <div className="flex-1 overflow-y-auto custom-scrollbar relative z-10 bg-slate-50 p-12">
           <div className="max-w-[1240px] mx-auto grid grid-cols-12 gap-10">
             
             {/* Left Column: Visuals & Metrics */}

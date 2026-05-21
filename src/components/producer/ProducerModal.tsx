@@ -40,7 +40,7 @@ export function ProducerModal({
       {/* Backdrop */}
       <div 
         onClick={onClose}
-        className="absolute inset-0  backdrop-blur-sm transition-opacity" 
+        className="absolute inset-0 bg-[#01012A]/60 backdrop-blur-md transition-all duration-300 ease-out animate-in fade-in" 
       />
       
       {/* Modal Container */}
@@ -72,14 +72,14 @@ export function ProducerModal({
            
            <button 
              onClick={onClose}
-             className="w-12 h-12 flex items-center justify-center bg-slate-50 hover:bg-slate-100 rounded-2xl transition-all group"
+             className="w-12 h-12 flex items-center justify-center bg-slate-50 hover:bg-slate-100 rounded-2xl transition-all group active:scale-95"
            >
               <Icons.Plus className="w-6 h-6 text-slate-400 group-hover:text-brand-primary rotate-45 transition-transform" />
            </button>
         </div>
 
         {/* Modal Body Content */}
-        <div className="flex-1 overflow-y-auto p-2 custom-scrollbar relative z-10 bg-slate-50/10">
+        <div className="flex-1 overflow-y-auto p-2 custom-scrollbar relative z-10 bg-[#F8FAFC]">
            {!hasLaunched ? (
              <div className="max-w-5xl mx-auto py-8 px-6">
                 <LaunchBriefForm 
