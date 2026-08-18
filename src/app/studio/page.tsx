@@ -595,7 +595,7 @@ function StudioPageContent() {
               sessionFailuresRef.current[v.sessionId] = 0;
 
               // HITL: If status is awaiting approval, get the latest DB state for assets
-              const isAwaitingApproval = updateData?.status?.toLowerCase().startsWith("awaiting_approval_");
+              const isAwaitingApproval = updateData?.status?.toLowerCase().startsWith("awaiting_approval_") || updateData?.status?.toLowerCase().startsWith("awaiting_");
               let hitlData = null;
               if (isAwaitingApproval) {
                 try {

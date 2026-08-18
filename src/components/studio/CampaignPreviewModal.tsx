@@ -561,7 +561,7 @@ export default function CampaignPreviewModal({
   const isRejected = localStatus?.toLowerCase() === "rejected";
   const isFailed = localStatus?.toLowerCase() === "failed";
   const isDraft = localStatus?.toLowerCase() === "ready_for_human_review";
-  const isAwaitingApproval = localStatus?.toLowerCase().startsWith("awaiting_approval");
+  const isAwaitingApproval = localStatus?.toLowerCase().startsWith("awaiting_approval") || localStatus?.toLowerCase().startsWith("awaiting_");
   const hasLaunched = localHistory.some(m => m.content.includes("LAUNCH_CAMPAIGN")) || 
     ["in_production", "queued", "In Production", "completed", "delivered", "approved"].includes(localStatus || "");
   const canChat = !hasLaunched && !isRejected && !isFailed && !isApproved; // Disallow chat after launch, rejection, failure, or approval
