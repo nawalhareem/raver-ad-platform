@@ -396,6 +396,8 @@ export default function CampaignPreviewModal({
     const currentStatus = localStatus?.toLowerCase() || "";
     const stepName = currentStatus.startsWith("awaiting_approval_")
       ? currentStatus.replace("awaiting_approval_", "")
+      : currentStatus.startsWith("awaiting_")
+      ? currentStatus.replace("awaiting_", "")
       : "render"; // Fallback to render if status is ambiguous
 
     setIsProcessingStep(true);
@@ -987,7 +989,7 @@ export default function CampaignPreviewModal({
               {/* Asset Candidates - Only show if it's an image step and we have images */}
               {((localStatus?.includes("image") || (isAwaitingApproval && !localStatus?.includes("voice") && !localStatus?.includes("music") && !localStatus?.includes("text") && !localStatus?.includes("render"))) && 
                 !localHitl?.music_url && !localStatus?.includes("music")) && 
-               (localHitl?.candidates || localHitl?.image_urls || campaignData?.nodes?.generate_image?.result?.scene_images) && (
+               ((localHitl?.candidates?.length || localHitl?.image_urls?.length || campaignData?.nodes?.generate_image?.result?.scene_images?.length)) && (
                 <div className="space-y-4">
                   <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest pl-1">
                     Select the best generation candidate:
@@ -1086,6 +1088,14 @@ export default function CampaignPreviewModal({
                   </div>
                 </div>
               )}
+
+              {/* No candidates notice for checkpoints with no visual assets */}
+              {(!localStatus?.includes("voice") && !localStatus?.includes("music") && !localStatus?.includes("text") && !localStatus?.includes("render") && !localHitl?.candidates?.length && !localHitl?.image_urls?.length) ? (
+                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-center">
+                  <p className="text-[12px] font-bold text-slate-400 uppercase tracking-widest">No preview assets for this step</p>
+                  <p className="text-[11px] text-slate-400 mt-1">Approve to continue the pipeline or improve to regenerate.</p>
+                </div>
+              ) : null}
 
               {/* Feedback / Input Input */}
               <div className="space-y-4">
