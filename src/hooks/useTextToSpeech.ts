@@ -41,7 +41,7 @@ export function useTextToSpeech() {
     }
   }, []);
 
-  const speak = useCallback(async (text: string, voiceId: string = "6yNpjSD7mrb4BwWBFQ0K") => {
+  const speak = useCallback(async (text: string, voiceId: string = "EXAVITQu4vr4xnSDxMaL") => {
     if (!audioRef.current) return;
 
     audioRef.current.pause();

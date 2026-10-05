@@ -63,3 +63,39 @@ export function normalizeAssetUrl(url: any): string {
   
   return targetUrl;
 }
+
+/** Collect playable scene-still URLs from HITL / director / node payloads. */
+export function collectScenePreviewUrls(...sources: any[]): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+
+  const push = (raw: any) => {
+    if (!raw) return;
+    if (Array.isArray(raw)) {
+      raw.forEach(push);
+      return;
+    }
+    const url = normalizeAssetUrl(
+      typeof raw === "string" ? raw : raw.s3_url || raw.image_url || raw.url || raw.uri
+    );
+    if (url && !seen.has(url)) {
+      seen.add(url);
+      out.push(url);
+    }
+  };
+
+  sources.forEach(push);
+  return out;
+}
+
+/** Unwrap custom-voice list payloads from Video API or the Node proxy. */
+export function parseCustomVoiceList(payload: any): any[] {
+  if (!payload) return [];
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload.voices)) return payload.voices;
+  const data = payload.data;
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.voices)) return data.voices;
+  if (data?.data && Array.isArray(data.data.voices)) return data.data.voices;
+  return [];
+}

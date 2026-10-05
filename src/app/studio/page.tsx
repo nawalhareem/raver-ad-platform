@@ -220,7 +220,7 @@ function StudioPageContent() {
 
         if (sessionRes.ok) {
           const sessionData = await sessionRes.json();
-          const rawData = sessionData.data?.sessions || sessionData.data;
+          const rawData = sessionData.data?.sessions || sessionData.sessions || sessionData.data;
           const sessionsArray = Array.isArray(rawData) ? rawData : (rawData ? [rawData] : []);
 
           if (Array.isArray(sessionsArray)) {
@@ -591,7 +591,7 @@ function StudioPageContent() {
 
             if (res.ok) {
               const resData = await res.json();
-              const updateData = resData.data;
+              const updateData = resData.data || resData;
               sessionFailuresRef.current[v.sessionId] = 0;
 
               // HITL: If status is awaiting approval, get the latest DB state for assets
@@ -602,7 +602,7 @@ function StudioPageContent() {
                   const dbUpdateRes = await apiFetch(`${API_BASE}/ai/director/session/${v.sessionId}/db-update?t=${Date.now()}`);
                   if (dbUpdateRes.ok) {
                     const dbData = await dbUpdateRes.json();
-                    hitlData = dbData.data;
+                    hitlData = dbData.data || dbData;
                   }
                 } catch (e) {
                   console.warn("db-update fetch failed:", e);
@@ -642,9 +642,9 @@ function StudioPageContent() {
                         completed_nodes: updateData.completed_nodes || [],
                         // Sync image_urls from DB for card slideshow
                         image: updateData.image_urls?.length ? updateData.image_urls
-                          : (hitlData?.image_urls?.length ? hitlData.image_urls : updatedVideos[index].image),
-                        // Merge hitl data if available
-                        ...(hitlData ? { hitl: hitlData } : {})
+                          : (updateData.hitl?.image_urls?.length ? updateData.hitl.image_urls
+                          : (hitlData?.image_urls?.length ? hitlData.image_urls : updatedVideos[index].image)),
+                        hitl: updateData.hitl || hitlData || updatedVideos[index].hitl,
                       };
                       return updatedVideos;
                     }
@@ -829,6 +829,11 @@ function StudioPageContent() {
           campaign_id: campaignToView.id,
           campaign_status: campaignToView.campaign_status,
           hitl: campaignToView.hitl,
+          image_urls: Array.isArray(campaignToView.image)
+            ? campaignToView.image
+            : campaignToView.image
+              ? [campaignToView.image]
+              : [],
         } : null}
         showHistory={false}
         onSelectVoice={handleSelectVoice}

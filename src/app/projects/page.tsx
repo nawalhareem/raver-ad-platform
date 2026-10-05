@@ -182,7 +182,7 @@ function ProjectsContent() {
             });
             if (res.ok) {
               const resData = await res.json();
-              const updateData = resData.data;
+              const updateData = resData.data || resData;
               sessionFailuresRef.current[c.sessionId] = 0;
 
               // HITL: If status is awaiting approval, get the latest DB state for assets
@@ -193,7 +193,7 @@ function ProjectsContent() {
                   const dbUpdateRes = await apiFetch(`${API_BASE}/ai/director/session/${c.sessionId}/db-update?t=${Date.now()}`);
                   if (dbUpdateRes.ok) {
                     const dbData = await dbUpdateRes.json();
-                    hitlData = dbData.data;
+                    hitlData = dbData.data || dbData;
                   }
                 } catch (e) {
                   console.warn("db-update fetch failed in projects:", e);
@@ -230,7 +230,9 @@ function ProjectsContent() {
                         script: updateData.script || updatedCampaigns[index].script,
                         voiceId: updateData.voice || updateData.voice_id || updateData.brief_draft?.voice || updatedCampaigns[index].voiceId,
                         image: updateData.image_urls?.length ? updateData.image_urls 
-                          : (hitlData?.image_urls?.length ? hitlData.image_urls : updatedCampaigns[index].image)
+                          : (updateData.hitl?.image_urls?.length ? updateData.hitl.image_urls
+                          : (hitlData?.image_urls?.length ? hitlData.image_urls : updatedCampaigns[index].image)),
+                        hitl: updateData.hitl || hitlData || updatedCampaigns[index].hitl,
                       };
                       return updatedCampaigns;
                     }
@@ -422,7 +424,13 @@ function ProjectsContent() {
           history: campaignToView.history,
           prompt: campaignToView.prompt,
           campaign_id: campaignToView.id,
-          voice_id: campaignToView.voiceId
+          voice_id: campaignToView.voiceId,
+          hitl: campaignToView.hitl,
+          image_urls: Array.isArray(campaignToView.image)
+            ? campaignToView.image
+            : campaignToView.image
+              ? [campaignToView.image]
+              : [],
         } : null}
         showHistory={true}
         onSwitchCampaign={() => {

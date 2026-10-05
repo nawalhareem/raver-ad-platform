@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Icons } from "@/components/ui/icons";
-import { cn } from "@/lib/utils";
+import { cn, parseCustomVoiceList } from "@/lib/utils";
 import { apiFetch } from "@/lib/api";
 import { toast } from "react-toastify";
 
@@ -74,17 +74,19 @@ export function VoiceSelector({ selectedVoice, onSelect, className, isDark }: Vo
         const response = await apiFetch(`${API_BASE}/custom-voice/list?t=${Date.now()}`);
         if (response.ok) {
           const result = await response.json();
-          if (result.success && Array.isArray(result.data)) {
-            // Map backend voices to VoiceSelector format
-            const mapped = result.data.map((v: any) => ({
-              id: v.voice_id,
-              voiceId: v.voice_id,
-              name: v.name,
-              description: v.description || "Custom neural voice",
-              category: v.category || "Custom Clone",
-              accent: v.labels?.accent || "Custom",
-              preview_url: v.preview_url
-            }));
+          const list = parseCustomVoiceList(result);
+          if (result.success && list.length > 0) {
+            const mapped = list
+              .filter((v: any) => v.category === "cloned" || v.category === "generated" || v.category === "professional" || !VOICE_OPTIONS.some(s => s.voiceId === v.voice_id || s.id === v.voice_id))
+              .map((v: any) => ({
+                id: v.voice_id,
+                voiceId: v.voice_id,
+                name: v.name,
+                description: v.description || "Custom neural voice",
+                category: v.category || "Custom Clone",
+                accent: v.labels?.accent || "Custom",
+                preview_url: v.preview_url
+              }));
             setCustomVoices(mapped);
           }
         }
@@ -151,32 +153,37 @@ export function VoiceSelector({ selectedVoice, onSelect, className, isDark }: Vo
           if (voice.preview_url) {
             audioRef.src = voice.preview_url;
           } else {
-            // Fallback for hardcoded voices or detail fetching
             const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
-            
-            let response = await apiFetch(`${API_BASE}/voice/get-voice/${voice.voiceId}`);
-            if (!response.ok) {
-              throw new Error(`Failed to fetch voice details (Status: ${response.status})`);
+            const previewId = voice.voiceId || voice.id;
+            let src: string | null = null;
+
+            try {
+              const response = await apiFetch(`${API_BASE}/voice/get-voice/${previewId}`);
+              if (response.ok) {
+                const result = await response.json();
+                const voiceData = result.success ? (result.data?.voice || result.data) : null;
+                if (voiceData?.preview_url) src = voiceData.preview_url;
+              }
+            } catch {
+              // Fall through to TTS sample.
             }
 
-            const result = await response.json();
-            
-            if (result.success) {
-              const voiceData = result.data.voice || result.data;
-              if (voiceData.preview_url) {
-                audioRef.src = voiceData.preview_url;
-              } else {
-                toast.error("No preview audio available for this voice.");
-                setPlayingId(null);
-                setIsBuffering(false);
-                return;
+            if (!src) {
+              const tts = await apiFetch(`${API_BASE}/voice/generate-tts`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  text: `Hi, I'm ${voice.name}. This is how I sound.`,
+                  voice_id: previewId,
+                }),
+              });
+              if (!tts.ok) {
+                throw new Error("This voice isn't available on our ElevenLabs account.");
               }
-            } else {
-              toast.error(result.message || "Failed to retrieve voice preview.");
-              setPlayingId(null);
-              setIsBuffering(false);
-              return;
+              src = URL.createObjectURL(await tts.blob());
             }
+
+            audioRef.src = src;
           }
 
           const playPromise = audioRef.play();

@@ -72,7 +72,7 @@ export default function HomePage() {
         
         if (response.ok) {
           const result = await response.json();
-          const rawData = Array.isArray(result.data?.sessions) ? result.data.sessions : result.data;
+          const rawData = Array.isArray(result.data?.sessions) ? result.data.sessions : (result.sessions || result.data);
           
           if (Array.isArray(rawData)) {
             // STRICT FILTER: Only include Studio sessions with a valid session_id

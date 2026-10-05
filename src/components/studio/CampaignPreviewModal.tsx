@@ -192,7 +192,7 @@ export default function CampaignPreviewModal({
       if (campaignData.status) setLocalStatus(campaignData.status);
       if (campaignData.video_url && !localVideoUrl) setLocalVideoUrl(campaignData.video_url);
       if (campaignData.music_url && !localMusicUrl) setLocalMusicUrl(campaignData.music_url);
-      if (campaignData.voiceover_url && !localVoiceoverUrl) setLocalVoiceoverUrl(campaignData.voiceover_url);
+      if (campaignData.voiceover_url) setLocalVoiceoverUrl(campaignData.voiceover_url);
       if (campaignData.hitl) setLocalHitl(campaignData.hitl);
       if (campaignData.history && campaignData.history.length > localHistory.length) {
         setLocalHistory(campaignData.history);
@@ -416,7 +416,7 @@ export default function CampaignPreviewModal({
       if (stepName.includes("voice")) {
         const finalVoice = selectedVoice || "adam";
         const finalVoiceName = VOICE_OPTIONS.find(v => v.id.toLowerCase() === finalVoice.toLowerCase())?.name || finalVoice;
-        finalNotes = `${finalNotes} (Selected Voice: ${finalVoiceName}${finalVoice !== finalVoiceName ? ` - ${finalVoice}` : ""})`;
+        finalNotes = `${finalNotes} (Selected Voice: ${finalVoiceName} voice_id=${finalVoice})`;
       }
 
       const bodyData: any = {
@@ -425,8 +425,7 @@ export default function CampaignPreviewModal({
         notes: finalNotes
       };
 
-      if (selectedAssetId) {
-        // Parse the string to an integer first to avoid string concatenation (e.g., "0" + 1 = "01")
+      if (selectedAssetId && stepName.includes("scene")) {
         bodyData.selected_asset_id = parseInt(selectedAssetId, 10) + 1;
       }
 
