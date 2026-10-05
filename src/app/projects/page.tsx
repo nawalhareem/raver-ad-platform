@@ -31,6 +31,7 @@ interface Campaign {
   voiceId?: string | null;
   createdAt?: string;
   campaign_status?: string | null;
+  hitl?: any;
 }
 
 function ProjectsContent() {
