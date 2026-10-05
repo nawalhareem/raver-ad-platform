@@ -1329,7 +1329,7 @@ export default function CampaignPreviewModal({
         <div className="p-6 border-t border-[#F1F5F9] bg-[#FDFDFF] flex items-center justify-between sticky bottom-0">
           <div className="flex flex-col gap-1"></div>
           <div className="flex items-center gap-3">
-            {lastAIMsg?.content?.includes("Launching your campaign now") && isDraft && (
+            {isDraft && (
               <button
                 onClick={handleApprove}
                 disabled={isApproving}
