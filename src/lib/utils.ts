@@ -88,6 +88,23 @@ export function collectScenePreviewUrls(...sources: any[]): string[] {
   return out;
 }
 
+const STUDIO_VOICE_LABELS: [string, string][] = [
+  ["1zOq86TcL7aRGbVsejbL", "Greg Boyd"],
+  ["LcfcDJNUP1GQjkzn1xUU", "Emily"],
+  ["EXAVITQu4vr4xnSDxMaL", "Sarah"],
+];
+
+/** Hide ElevenLabs ids / voice tags from chat bubbles. The picker shows the name. */
+export function stripVoiceMeta(content: string): string {
+  let out = (content || "")
+    .replace(/\n*\s*\[Voice:[^\]]*\]/gi, "")
+    .replace(/\n*\s*\[User selected voice:[^\]]*\]/gi, "");
+  for (const [id, name] of STUDIO_VOICE_LABELS) {
+    out = out.split(id).join(name);
+  }
+  return out.trim();
+}
+
 /** Unwrap custom-voice list payloads from Video API or the Node proxy. */
 export function parseCustomVoiceList(payload: any): any[] {
   if (!payload) return [];

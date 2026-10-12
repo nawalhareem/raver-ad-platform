@@ -10,7 +10,7 @@ import { cn, normalizeAssetUrl } from "@/lib/utils";
 import { apiFetch } from "@/lib/api";
 
 
-import { VoiceSelector, VOICE_OPTIONS } from "@/components/agents/audio-lead/VoiceSelector";
+import { VoiceSelector, DEFAULT_VOICE_ID, resolveVoiceOption } from "@/components/agents/audio-lead/VoiceSelector";
 
 import { useUser } from "@/context/UserContext";
 
@@ -77,36 +77,12 @@ export default function StudioHero({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAssetModalOpen, setIsAssetModalOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
-  const [selectedVoice, setSelectedVoice] = useState("adam");
+  const [selectedVoice, setSelectedVoice] = useState(DEFAULT_VOICE_ID);
   const [voiceError, setVoiceError] = useState(false);
   const [selectedAssets, setSelectedAssets] = useState<Asset[]>([]);
   const [dbCampaigns, setDbCampaigns] = useState<Campaign[]>([]);
-  const [allVoices, setAllVoices] = useState<any[]>(VOICE_OPTIONS);
   const { user } = useUser();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  // Fetch custom voices to ensure we can resolve names in prompts
-  useEffect(() => {
-    const fetchVoices = async () => {
-      try {
-        const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
-        const response = await apiFetch(`${API_BASE}/custom-voice/list?t=${Date.now()}`);
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success && Array.isArray(result.data)) {
-            const mapped = result.data.map((v: any) => ({
-              id: v.voice_id,
-              name: v.name
-            }));
-            setAllVoices([...VOICE_OPTIONS, ...mapped]);
-          }
-        }
-      } catch (error) {
-        console.error("Failed to fetch voices in StudioHero:", error);
-      }
-    };
-    fetchVoices();
-  }, []);
 
   // Fetch campaigns from the database for the reference section
   useEffect(() => {
@@ -175,11 +151,12 @@ export default function StudioHero({
   const handleSend = () => {
     if (!prompt.trim()) return;
 
-    const activeVoice = selectedVoice || "adam";
+    const picked = resolveVoiceOption(selectedVoice || DEFAULT_VOICE_ID);
+    const activeVoice = picked.voiceId || picked.id;
     setVoiceError(false);
 
-    // Append voice selection to the prompt so AI Director knows
-    const voiceName = allVoices.find(v => v.id === activeVoice)?.name || activeVoice;
+    // Send the ElevenLabs id so Video TTS uses Greg Boyd, not Adam.
+    const voiceName = picked.name;
     const enrichedPrompt = `${prompt.trim()}\n\n[Voice: ${activeVoice} (${voiceName})]`;
 
     onSend?.(enrichedPrompt, selectedAssets);

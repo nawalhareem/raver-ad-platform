@@ -5,7 +5,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Icons } from "@/components/ui/icons";
 import { apiFetch } from "@/lib/api";
 import { getToken } from "@/lib/auth";
-import { cn } from "@/lib/utils";
+import { cn, parseCustomVoiceList } from "@/lib/utils";
 import { RaverLoadingState } from "@/components/ui/RaverLoadingState";
 import { toast } from "react-toastify";
 
@@ -43,11 +43,7 @@ export default function VoiceStudioPage() {
       if (response.ok) {
         const result = await response.json();
         if (result.success) {
-          if (Array.isArray(result.data)) {
-            setVoices(result.data);
-          } else if (result.data && Array.isArray(result.data.voices)) {
-            setVoices(result.data.voices);
-          }
+          setVoices(parseCustomVoiceList(result));
         }
       }
     } catch (error) {

@@ -10,7 +10,7 @@ import { RaverLoadingState } from "@/components/ui/RaverLoadingState";
 import { toast } from "react-toastify";
 import ImageViewerModal from "@/components/agents/ImageViewerModal";
 import { normalizeAssetUrl } from "@/lib/utils";
-import { VoiceSelector, VOICE_OPTIONS } from "@/components/agents/audio-lead/VoiceSelector";
+import { VoiceSelector, DEFAULT_VOICE_ID, resolveVoiceOption } from "@/components/agents/audio-lead/VoiceSelector";
 
 export default function CampaignDetailPage() {
   const params = useParams();
@@ -26,7 +26,7 @@ export default function CampaignDetailPage() {
   const [isProcessingStep, setIsProcessingStep] = useState(false);
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
   const [stepNotes, setStepNotes] = useState("");
-  const [selectedVoice, setSelectedVoice] = useState<string>("adam");
+  const [selectedVoice, setSelectedVoice] = useState<string>(DEFAULT_VOICE_ID);
 
   useEffect(() => {
     const fetchCampaign = async () => {
@@ -221,11 +221,10 @@ export default function CampaignDetailPage() {
       }
       
       if (stepName === "generate_voice") {
-        const activeVoice = selectedVoice || "adam";
+        const voiceOption = resolveVoiceOption(selectedVoice || DEFAULT_VOICE_ID);
+        const activeVoice = voiceOption.voiceId || voiceOption.id;
         bodyData.voice_id = activeVoice;
-        const voiceOption = VOICE_OPTIONS.find(v => v.id === activeVoice);
-        const voiceName = voiceOption ? voiceOption.name : activeVoice;
-        bodyData.notes = `[Selected Voice: ${voiceName} - ${activeVoice}] ${bodyData.notes}`;
+        bodyData.notes = `[Selected Voice: ${voiceOption.name} - ${activeVoice}] ${bodyData.notes}`;
       }
 
       const response = await apiFetch(`${process.env.NEXT_PUBLIC_API_URL}/ai/producer/campaign/${campaign.session_id}/approve-step`, {
@@ -885,7 +884,7 @@ export default function CampaignDetailPage() {
                       { label: "Brand Tone", value: brief.tone },
                       { label: "Campaign Mood", value: brief.mood },
                       { label: "Scene Count", value: `${brief.num_scenes || 0} Frames` },
-                      { label: "Voice Profile", value: brief.voice },
+                      { label: "Voice Profile", value: resolveVoiceOption(brief.voice).name },
                       { label: "Synthetics Speed", value: `${brief.voice_speed || 1.0}x` },
                       { label: "Transition Matrix", value: brief.transition },
                       { label: "Atmospheric Mix", value: `${Math.round((brief.music_volume || 0.1) * 100)}%` },

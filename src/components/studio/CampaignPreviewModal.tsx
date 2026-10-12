@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Icons } from "@/components/ui/icons";
-import { cn } from "@/lib/utils";
+import { cn, stripVoiceMeta } from "@/lib/utils";
 import { useUser } from "@/context/UserContext";
 import { MarkdownRenderer } from "@/components/ui/MarkdownRenderer";
 import { apiFetch } from "@/lib/api";
 import { getToken } from "@/lib/auth";
-import { VoiceSelector, VOICE_OPTIONS } from "@/components/agents/audio-lead/VoiceSelector";
+import { VoiceSelector, DEFAULT_VOICE_ID, resolveVoiceOption } from "@/components/agents/audio-lead/VoiceSelector";
 import { normalizeAssetUrl } from "@/lib/utils";
 import { toast } from "react-toastify";
 import ImageViewerModal from "@/components/agents/ImageViewerModal";
@@ -54,7 +54,7 @@ const cleanContent = (content: string) => {
       /* keep source if parse fails */
     }
   }
-  return cleaned.trim();
+  return stripVoiceMeta(cleaned);
 };
 
 export default function CampaignPreviewModal({
@@ -79,7 +79,9 @@ export default function CampaignPreviewModal({
   // Editing states
   const [isEditingScript, setIsEditingScript] = useState(false);
   const [editedScript, setEditedScript] = useState(campaignData?.script || "");
-  const [selectedVoice, setSelectedVoice] = useState<string>(campaignData?.voice_id?.toLowerCase() || "adam");
+  const [selectedVoice, setSelectedVoice] = useState<string>(
+    resolveVoiceOption(campaignData?.voice_id || DEFAULT_VOICE_ID).id
+  );
   const [musicPrompt, setMusicPrompt] = useState("");
   const [isApplyingChanges, setIsApplyingChanges] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
@@ -151,9 +153,9 @@ export default function CampaignPreviewModal({
     }
   };
 
-  // Get the name of the selected voice for display
-  const selectedVoiceName =
-    VOICE_OPTIONS.find((v) => v.id.toLowerCase() === selectedVoice?.toLowerCase())?.name || selectedVoice || "Neural Selection";
+  const selectedVoiceOption = resolveVoiceOption(selectedVoice || DEFAULT_VOICE_ID);
+  const selectedVoiceName = selectedVoiceOption.name;
+  const selectedElevenLabsId = selectedVoiceOption.voiceId || selectedVoiceOption.id;
 
   // Initialize state when the modal opens or when the session ID changes
   useEffect(() => {
@@ -168,11 +170,7 @@ export default function CampaignPreviewModal({
       setLocalStatus(campaignData.status);
       setEditedScript(campaignData.script || "");
 
-      if (campaignData.voice_id) {
-        setSelectedVoice(campaignData.voice_id.toLowerCase());
-      } else {
-        setSelectedVoice("adam"); // Reset to default if none
-      }
+      setSelectedVoice(resolveVoiceOption(campaignData.voice_id || DEFAULT_VOICE_ID).id);
 
       setLocalHitl(campaignData.hitl || null);
       setLocalVideoUrl(campaignData.video_url || null);
@@ -265,7 +263,7 @@ export default function CampaignPreviewModal({
       }
 
       if (selectedVoice) {
-        changeMessage += `Use voice: ${selectedVoice}\n\n`;
+        changeMessage += `Use voice: ${selectedVoiceName}\n\n`;
       }
 
       if (musicPrompt) {
@@ -289,7 +287,7 @@ export default function CampaignPreviewModal({
         body: JSON.stringify({
           session_id: campaignData.campaign_id,
           campaign_id: campaignData.campaign_id,
-          message: changeMessage + `voice of the script ${selectedVoice || "adam"} and background music style ${musicPrompt || "original"}`,
+          message: changeMessage + `voice of the script ${selectedVoiceName} voice_id=${selectedElevenLabsId} and background music style ${musicPrompt || "original"}`,
           tag: "director"
         }),
       });
@@ -414,9 +412,7 @@ export default function CampaignPreviewModal({
       
       // Only include the current voice selection in the notes for the AI Director if we are reviewing the voice
       if (stepName.includes("voice")) {
-        const finalVoice = selectedVoice || "adam";
-        const finalVoiceName = VOICE_OPTIONS.find(v => v.id.toLowerCase() === finalVoice.toLowerCase())?.name || finalVoice;
-        finalNotes = `${finalNotes} (Selected Voice: ${finalVoiceName} voice_id=${finalVoice})`;
+        finalNotes = `${finalNotes} (Selected Voice: ${selectedVoiceName} voice_id=${selectedElevenLabsId})`;
       }
 
       const bodyData: any = {
@@ -667,7 +663,7 @@ export default function CampaignPreviewModal({
                 Initial Campaign Concept
               </h3>
               <div className="bg-[#F8FAFC] text-[#4F4F4F] italic border border-[#F1F5F9] rounded-[32px] p-8 shadow-sm relative group">
-                <MarkdownRenderer content={`"${campaignData.message || campaignData.prompt}"`} isUser={false} />
+                <MarkdownRenderer content={`"${stripVoiceMeta(campaignData.message || campaignData.prompt || "")}"`} isUser={false} />
                 <button 
                   onClick={() => handleToggleSpeech(campaignData.message || campaignData.prompt || "", `initial-${(campaignData.message || campaignData.prompt || "").length}-${(campaignData.message || campaignData.prompt || "").substring(0, 50)}`)}
                   className={cn(
@@ -1226,7 +1222,7 @@ export default function CampaignPreviewModal({
                                 🚀 Success! Campaign Launched.
                               </span>
                             ) : (
-                              <MarkdownRenderer content={msg.content} isUser={msg.role === "user"} />
+                              <MarkdownRenderer content={stripVoiceMeta(msg.content)} isUser={msg.role === "user"} />
                             )}
                             {msg.role !== "user" && msg.content !== "LAUNCH_CAMPAIGN_PLACEHOLDER" && (
                               <button 

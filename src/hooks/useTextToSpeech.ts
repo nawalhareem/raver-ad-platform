@@ -3,6 +3,9 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { apiFetch } from "@/lib/api";
 
+/** Raver Director talk-back. Not the campaign picker (Greg Boyd / Emily / Sarah). */
+const RAVER_ASSISTANT_VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
+
 /**
  * Custom hook for Text-to-Speech using backend ElevenLabs API.
  */
@@ -41,7 +44,7 @@ export function useTextToSpeech() {
     }
   }, []);
 
-  const speak = useCallback(async (text: string, voiceId: string = "EXAVITQu4vr4xnSDxMaL") => {
+  const speak = useCallback(async (text: string, voiceId: string = RAVER_ASSISTANT_VOICE_ID) => {
     if (!audioRef.current) return;
 
     audioRef.current.pause();

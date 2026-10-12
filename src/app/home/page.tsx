@@ -13,6 +13,7 @@ import { apiFetch } from "@/lib/api";
 import { useUser } from "@/context/UserContext";
 import { RaverLoadingState } from "@/components/ui/RaverLoadingState";
 import CampaignPreviewModal from "@/components/studio/CampaignPreviewModal";
+import { DEFAULT_VOICE_ID } from "@/components/agents/audio-lead/VoiceSelector";
 import { toast } from "react-toastify";
 
 const stats = [
@@ -98,7 +99,7 @@ export default function HomePage() {
               history: s.history,
               brief_draft: s.brief_draft,
               prompt: s.prompt,
-              voice_id: s.voice || s.voice_id || s.brief_draft?.voice || s.production?.voice || s.metadata?.voice || "adam",
+              voice_id: s.voice || s.voice_id || s.brief_draft?.voice || s.production?.voice || s.metadata?.voice || DEFAULT_VOICE_ID,
               image: s.image_urls?.length ? s.image_urls : (s.nodes?.generate_image?.result?.scene_images?.length ? s.nodes.generate_image.result.scene_images : "/assets/hashtag-campaign.jpg"),
               created_at: s.created_at,
               time: s.created_at ? "Recently" : "Just now"

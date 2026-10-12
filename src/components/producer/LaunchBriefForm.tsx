@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Icons } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
-import { VoiceSelector, VOICE_OPTIONS } from "../agents/audio-lead/VoiceSelector";
+import { VoiceSelector, DEFAULT_VOICE_ID, resolveVoiceOption } from "../agents/audio-lead/VoiceSelector";
 
 interface Scene {
   id: string;
@@ -26,7 +26,7 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
   const [numScenes, setNumScenes] = useState(7);
   const [transition, setTransition] = useState("fade");
   const [musicVolume, setMusicVolume] = useState(0.2);
-  const [voice, setVoice] = useState(VOICE_OPTIONS[0].id);
+  const [voice, setVoice] = useState(DEFAULT_VOICE_ID);
   const [videoModel, setVideoModel] = useState("kling-video");
   const [logoUrl, setLogoUrl] = useState("");
   const [voiceSpeed, setVoiceSpeed] = useState(1.0);
@@ -40,8 +40,8 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
     if (!isFormValid) return;
     
     // Map short ID to ElevenLabs voiceId
-    const selectedVoiceOption = VOICE_OPTIONS.find(v => v.id === voice);
-    const effectiveVoiceId = selectedVoiceOption?.voiceId || voice;
+    const selectedVoiceOption = resolveVoiceOption(voice);
+    const effectiveVoiceId = selectedVoiceOption.voiceId || selectedVoiceOption.id;
 
     onLaunch({
       business_name: businessName,
@@ -244,7 +244,7 @@ export function LaunchBriefForm({ onLaunch, isLoading }: LaunchBriefFormProps) {
                />
                <p className="text-xs font-black text-white/30 uppercase tracking-[0.2em] mt-2 ml-1 flex items-center gap-2">
                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
-                 Active: <span className="text-white/80">{VOICE_OPTIONS.find(v => v.id === voice)?.name || "Neural Selection"}</span>
+                 Active: <span className="text-white/80">{resolveVoiceOption(voice).name}</span>
                </p>
             </div>
 

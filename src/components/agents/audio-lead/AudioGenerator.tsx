@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Icons } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
-import { VoiceSelector, VOICE_OPTIONS } from "./VoiceSelector";
+import { VoiceSelector, DEFAULT_VOICE_ID, resolveVoiceOption } from "./VoiceSelector";
 
 interface AudioGeneratorProps {
   onGenerateMusic: (data: any) => void;
@@ -29,7 +29,7 @@ export function AudioGenerator({
     tone: "elegant",
     duration: 30,
     script: "",
-    voice: VOICE_OPTIONS[0].id,
+    voice: DEFAULT_VOICE_ID,
     voiceSpeed: 1.0,
     musicVolume: 0.2
   });
@@ -40,8 +40,8 @@ export function AudioGenerator({
 
   const handleAction = () => {
     // Map the short mnemonic ID to the actual ElevenLabs voiceId
-    const selectedVoiceOption = VOICE_OPTIONS.find(v => v.id === formData.voice);
-    const effectiveVoiceId = selectedVoiceOption?.voiceId || formData.voice;
+    const selectedVoiceOption = resolveVoiceOption(formData.voice);
+    const effectiveVoiceId = selectedVoiceOption.voiceId || selectedVoiceOption.id;
 
     if (activeTab === "music") {
       onGenerateMusic({

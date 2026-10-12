@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { getToken } from "@/lib/auth";
 import { apiFetch } from "@/lib/api";
-import { cn, enrichMessageWithCampaign, normalizeAssetUrl, formatFileSize } from "@/lib/utils";
+import { cn, enrichMessageWithCampaign, normalizeAssetUrl, formatFileSize, stripVoiceMeta } from "@/lib/utils";
 import { MarkdownRenderer } from "@/components/ui/MarkdownRenderer";
 import { useVoiceInput } from "@/hooks/useVoiceInput";
 import { useTextToSpeech } from "@/hooks/useTextToSpeech";
@@ -48,7 +48,7 @@ const cleanContent = (content: string) => {
       /* keep source if parse fails */
     }
   }
-  return cleaned.trim();
+  return stripVoiceMeta(cleaned);
 };
 
 export default function AIResponseModal({
@@ -186,7 +186,7 @@ export default function AIResponseModal({
           return {
             id: `hist-${i}-${Date.now()}`,
             role: (m.role === "assistant" || m.role === "ai") ? "ai" : "user",
-            content: content,
+            content: stripVoiceMeta(content),
             timestamp: new Date(),
             assets: (m as any).assets
           };
@@ -198,7 +198,7 @@ export default function AIResponseModal({
           {
             id: "initial-user",
             role: "user",
-            content: initialUserMessage,
+            content: stripVoiceMeta(initialUserMessage),
             timestamp: new Date(),
             assets: initialUserAssets || []
           },
@@ -441,7 +441,7 @@ export default function AIResponseModal({
                         } catch (e) { /* fallback to original content if parse fails */ }
                       }
                     }
-                    return <MarkdownRenderer content={content.trim()} isUser={m.role === "user"} />;
+                    return <MarkdownRenderer content={stripVoiceMeta(content)} isUser={m.role === "user"} />;
                   })()}
                   {m.role === "ai" && (
                     <button
