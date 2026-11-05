@@ -50,6 +50,7 @@ interface Campaign {
   prompt?: string | null;
   completed_nodes?: string[];
   voice?: string | null;
+  voiceName?: string | null;
   campaign_status?: string | null;
   hitl?: any;
   step_approvals?: any;
@@ -257,6 +258,7 @@ function StudioPageContent() {
                 prompt: s.prompt,
                 completed_nodes: s.completed_nodes || [],
                 voice: s.voice || brief.voice,
+                voiceName: s.voice_name || brief.voice_name,
                 campaign_status: s.campaign_status,
                 step_approvals: s.step_approvals
               };
@@ -649,6 +651,8 @@ function StudioPageContent() {
                       updatedVideos[index].campaign_status !== updateData.campaign_status ||
                       updatedVideos[index].message !== updateData.message ||
                       updatedVideos[index].videoUrl !== updateData.video_url ||
+                      updatedVideos[index].voice !== (updateData.voice || updateData.hitl?.voice || updatedVideos[index].voice) ||
+                      updatedVideos[index].voiceName !== (updateData.voice_name || updateData.hitl?.voice_name || updatedVideos[index].voiceName) ||
                       JSON.stringify(updatedVideos[index].image) !== JSON.stringify(updateData.image_urls)
                     ) {
                       const isInvalidStatus = !updateData.status || updateData.status.toLowerCase() === 'failed';
@@ -667,6 +671,8 @@ function StudioPageContent() {
                         voiceoverUrl: updateData.voiceover_url || updateData.audio_url || updatedVideos[index].voiceoverUrl,
                         musicUrl: updateData.music_url || updatedVideos[index].musicUrl,
                         script: updateData.script || updatedVideos[index].script,
+                        voice: updateData.voice || updateData.hitl?.voice || updatedVideos[index].voice,
+                        voiceName: updateData.voice_name || updateData.hitl?.voice_name || updatedVideos[index].voiceName,
                         history: updateData.history || updatedVideos[index].history,
                         prompt: updateData.prompt || updatedVideos[index].prompt,
                         completed_nodes: updateData.completed_nodes || [],
@@ -717,7 +723,9 @@ function StudioPageContent() {
         latest.status !== campaignToView.status ||
         latest.videoUrl !== campaignToView.videoUrl ||
         latest.image !== campaignToView.image ||
-        latest.script !== campaignToView.script
+        latest.script !== campaignToView.script ||
+        latest.voice !== campaignToView.voice ||
+        latest.voiceName !== campaignToView.voiceName
       )) {
         setCampaignToView(latest);
       }
@@ -860,6 +868,7 @@ function StudioPageContent() {
           history: campaignToView.history,
           prompt: campaignToView.prompt,
           voice_id: campaignToView.voice,
+          voice_name: campaignToView.voiceName,
           campaign_id: campaignToView.id,
           campaign_status: campaignToView.campaign_status,
           hitl: campaignToView.hitl,

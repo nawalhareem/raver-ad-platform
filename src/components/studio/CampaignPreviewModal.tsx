@@ -28,6 +28,7 @@ interface CampaignPreviewModalProps {
     history?: { role: string; content: string }[] | null;
     prompt?: string | null;
     voice_id?: string | null;          // Added: voice_id from campaign
+    voice_name?: string | null;
     campaign_status?: string | null;
     hitl?: any;
     nodes?: any;
@@ -58,6 +59,22 @@ const cleanContent = (content: string) => {
   return stripVoiceMeta(cleaned);
 };
 
+/** Voice that actually belongs to this campaign, not the page-level default. */
+function campaignVoiceKey(data?: {
+  voice_id?: string | null;
+  voice_name?: string | null;
+  hitl?: any;
+} | null) {
+  if (!data) return "";
+  return (
+    data.voice_id ||
+    data.voice_name ||
+    data.hitl?.voice ||
+    data.hitl?.voice_name ||
+    ""
+  );
+}
+
 export default function CampaignPreviewModal({
   isOpen,
   onClose,
@@ -82,8 +99,10 @@ export default function CampaignPreviewModal({
   const [isEditingScript, setIsEditingScript] = useState(false);
   const [editedScript, setEditedScript] = useState(campaignData?.script || "");
   const [selectedVoice, setSelectedVoice] = useState<string>(
-    resolveVoiceOption(studioVoice || campaignData?.voice_id || DEFAULT_VOICE_ID).id
+    resolveVoiceOption(campaignVoiceKey(campaignData) || studioVoice || DEFAULT_VOICE_ID).id
   );
+  const voicePickedRef = useRef(false);
+  const seenStudioVoice = useRef(studioVoice || "");
   const lastSentVoice = useRef(selectedVoice || studioVoice || "");
   const [musicPrompt, setMusicPrompt] = useState("");
   const [isApplyingChanges, setIsApplyingChanges] = useState(false);
@@ -157,6 +176,7 @@ export default function CampaignPreviewModal({
   };
 
   const handlePickVoice = (id: string) => {
+    voicePickedRef.current = true;
     setSelectedVoice(id);
     onSelectVoice?.(id);
   };
@@ -183,7 +203,10 @@ export default function CampaignPreviewModal({
       setLocalStatus(campaignData.status);
       setEditedScript(campaignData.script || "");
 
-      setSelectedVoice(resolveVoiceOption(studioVoice || campaignData.voice_id || DEFAULT_VOICE_ID).id);
+      voicePickedRef.current = false;
+      setSelectedVoice(
+        resolveVoiceOption(campaignVoiceKey(campaignData) || studioVoice || DEFAULT_VOICE_ID).id
+      );
 
       setLocalHitl(campaignData.hitl || null);
       setLocalVideoUrl(campaignData.video_url || null);
@@ -197,8 +220,15 @@ export default function CampaignPreviewModal({
     }
   }, [isOpen, campaignData?.session_id]); // Only run when modal opens or session changes
 
+  // The page picker defaults to Greg. Only follow it after the user actually changes it.
   useEffect(() => {
-    if (!isOpen || !studioVoice) return;
+    if (!isOpen) {
+      seenStudioVoice.current = studioVoice || "";
+      return;
+    }
+    if (!studioVoice || studioVoice === seenStudioVoice.current) return;
+    seenStudioVoice.current = studioVoice;
+    voicePickedRef.current = true;
     setSelectedVoice(resolveVoiceOption(studioVoice).id);
   }, [studioVoice, isOpen]);
 
@@ -217,6 +247,12 @@ export default function CampaignPreviewModal({
       // Only sync script from backend if the user isn't currently editing it
       if (!isEditingScript && campaignData.script) {
         setEditedScript(campaignData.script);
+      }
+
+      // Follow the voice on this voiceover unless the user just picked another one.
+      const fromCampaign = campaignVoiceKey(campaignData);
+      if (!voicePickedRef.current && fromCampaign) {
+        setSelectedVoice(resolveVoiceOption(fromCampaign).id);
       }
     }
   }, [campaignData, isOpen, isEditingScript]); // Run whenever polling updates campaignData
@@ -239,6 +275,10 @@ export default function CampaignPreviewModal({
           if (data.video_url) setLocalVideoUrl(data.video_url);
           if (data.music_url) setLocalMusicUrl(data.music_url);
           if (data.voiceover_url) setLocalVoiceoverUrl(data.voiceover_url);
+          const fromDb = data.voice || data.voice_name || data.hitl?.voice || data.hitl?.voice_name;
+          if (!voicePickedRef.current && fromDb) {
+            setSelectedVoice(resolveVoiceOption(fromDb).id);
+          }
         }
       }
     } catch (e) {
