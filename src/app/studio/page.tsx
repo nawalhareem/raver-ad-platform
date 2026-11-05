@@ -200,8 +200,10 @@ function StudioPageContent() {
   const [initialUserAssets, setInitialUserAssets] = useState<any[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState("");
   const [aiResponseContent, setAiResponseContent] = useState("");
+  const [heroFollowUp, setHeroFollowUp] = useState<{ id: string; user: string; ai: string; assets?: any[] } | null>(null);
   const [activePipelineIndex, setActivePipelineIndex] = useState(0);
   const [selectedVoice, setSelectedVoice] = useState<string>("");
+  const sendLock = useRef(false);
   const [showVoices, setShowVoices] = useState<Array<any>>([]);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -332,15 +334,32 @@ function StudioPageContent() {
   };
 
 
-  const handleSelectVoice = (voice: string) => {
+  const handleSelectVoice = useCallback((voice: string) => {
     setSelectedVoice(voice);
-  };
+  }, []);
+
+  const handleContinueChat = useCallback(() => {
+    if (!currentSessionId) return;
+    setShowAIResponse(true);
+  }, [currentSessionId]);
+
+  const handleNewChat = useCallback(() => {
+    setShowAIResponse(false);
+    setAiResponseContent("");
+    setInitialUserPrompt("");
+    setInitialUserAssets([]);
+    setCurrentSessionId("");
+    setHeroFollowUp(null);
+  }, []);
 
   const handlePromptSend = async (prompt: string, assets?: any[]) => {
-    if (isSending) return;
+    if (sendLock.current || isSending) return;
+    sendLock.current = true;
     setIsSending(true);
 
-    const sessionId = Date.now().toString();
+    const isFollowUp = Boolean(currentSessionId);
+    const sessionId = currentSessionId || Date.now().toString();
+    if (!currentSessionId) setCurrentSessionId(sessionId);
     const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
     // Combine assets into the prompt text for AI visibility if provided
@@ -424,13 +443,23 @@ function StudioPageContent() {
 
       localStorage.setItem("chat_sessions", JSON.stringify([newSession, ...existingSessions]));
 
-      setInitialUserPrompt(enrichedMessage);
-      setInitialUserAssets(assets || []);
-      setAiResponseContent(aiResponse);
       setCurrentSessionId(sessionId);
-
       setIsSelectionModalOpen(false);
       setIsModalOpen(false);
+
+      if (isFollowUp) {
+        setHeroFollowUp({
+          id: Date.now().toString(),
+          user: prompt,
+          ai: aiResponse,
+          assets: assets || []
+        });
+      } else {
+        setHeroFollowUp(null);
+        setInitialUserPrompt(enrichedMessage);
+        setInitialUserAssets(assets || []);
+        setAiResponseContent(aiResponse);
+      }
       setShowAIResponse(true);
 
       const campaignStatus = responseData?.campaign_status;
@@ -469,10 +498,11 @@ function StudioPageContent() {
         setActivePipelineIndex(0);
       }
 
-      setIsSending(false);
     } catch (err) {
       console.error("AI Director Error:", err);
       toast.error("Failed to connect to AI Director. Please ensure the backend is running.");
+    } finally {
+      sendLock.current = false;
       setIsSending(false);
     }
   };
@@ -734,6 +764,10 @@ function StudioPageContent() {
           onViewDetailsforcampaigns={handleViewDetailsforcampaigns}
           onSend={handlePromptSend}
           isSending={isSending}
+          hasActiveChat={Boolean(currentSessionId) && !showAIResponse}
+          onContinueChat={handleContinueChat}
+          onNewChat={handleNewChat}
+          onVoiceChange={handleSelectVoice}
         />
 
         <ActiveCampaignsGrid
@@ -836,6 +870,7 @@ function StudioPageContent() {
               : [],
         } : null}
         showHistory={false}
+        studioVoice={selectedVoice}
         onSelectVoice={handleSelectVoice}
         onSwitchCampaign={() => {
           setIsPreviewOpen(false);
@@ -848,9 +883,6 @@ function StudioPageContent() {
         isOpen={showAIResponse}
         onClose={() => {
           setShowAIResponse(false);
-          setAiResponseContent("");
-          setInitialUserPrompt("");
-          setCurrentSessionId("");
           fetchCampaigns();
         }}
         initialUserMessage={initialUserPrompt}
@@ -859,6 +891,8 @@ function StudioPageContent() {
         initialHistory={campaignToView?.history || []}
         selectedCampaign={selectedCampaign}
         initialUserAssets={initialUserAssets}
+        selectedVoice={selectedVoice}
+        heroFollowUp={heroFollowUp}
         onCampaignStart={(campaign: Campaign) => {
           setVideos(prev => {
             const exists = prev.findIndex(v => v.sessionId === campaign.sessionId);

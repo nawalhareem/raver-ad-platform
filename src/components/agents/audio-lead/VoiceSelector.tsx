@@ -62,6 +62,13 @@ export function resolveVoiceOption(voice?: string | null) {
   );
 }
 
+/** Same [Voice:] tag for hero chat, follow-ups, and Preview collaboration. */
+export function studioVoiceTag(voice?: string | null): string {
+  const picked = resolveVoiceOption(voice || DEFAULT_VOICE_ID);
+  const activeVoice = picked.voiceId || picked.id;
+  return `[Voice: ${activeVoice} (${picked.name})]`;
+}
+
 
 interface VoiceSelectorProps {
   selectedVoice: string;

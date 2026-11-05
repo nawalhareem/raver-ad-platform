@@ -6,7 +6,7 @@ import { useUser } from "@/context/UserContext";
 import { MarkdownRenderer } from "@/components/ui/MarkdownRenderer";
 import { apiFetch } from "@/lib/api";
 import { getToken } from "@/lib/auth";
-import { VoiceSelector, DEFAULT_VOICE_ID, resolveVoiceOption } from "@/components/agents/audio-lead/VoiceSelector";
+import { VoiceSelector, DEFAULT_VOICE_ID, resolveVoiceOption, studioVoiceTag } from "@/components/agents/audio-lead/VoiceSelector";
 import { normalizeAssetUrl } from "@/lib/utils";
 import { toast } from "react-toastify";
 import ImageViewerModal from "@/components/agents/ImageViewerModal";
@@ -37,6 +37,7 @@ interface CampaignPreviewModalProps {
   onRefresh?: () => void;
   onSelectVoice?: (voice: string) => void;
   onSwitchCampaign?: () => void;
+  studioVoice?: string;
 }
 
 
@@ -65,6 +66,7 @@ export default function CampaignPreviewModal({
   onRefresh,
   onSelectVoice,
   onSwitchCampaign,
+  studioVoice,
 }: CampaignPreviewModalProps) {
   const { user } = useUser();
   const [localHistory, setLocalHistory] = useState<{ role: string; content: string }[]>([]);
@@ -80,8 +82,9 @@ export default function CampaignPreviewModal({
   const [isEditingScript, setIsEditingScript] = useState(false);
   const [editedScript, setEditedScript] = useState(campaignData?.script || "");
   const [selectedVoice, setSelectedVoice] = useState<string>(
-    resolveVoiceOption(campaignData?.voice_id || DEFAULT_VOICE_ID).id
+    resolveVoiceOption(studioVoice || campaignData?.voice_id || DEFAULT_VOICE_ID).id
   );
+  const lastSentVoice = useRef(selectedVoice || studioVoice || "");
   const [musicPrompt, setMusicPrompt] = useState("");
   const [isApplyingChanges, setIsApplyingChanges] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
@@ -153,7 +156,17 @@ export default function CampaignPreviewModal({
     }
   };
 
-  const selectedVoiceOption = resolveVoiceOption(selectedVoice || DEFAULT_VOICE_ID);
+  const handlePickVoice = (id: string) => {
+    setSelectedVoice(id);
+    onSelectVoice?.(id);
+  };
+
+  const handleClose = () => {
+    stopSpeaking();
+    onClose();
+  };
+
+  const selectedVoiceOption = resolveVoiceOption(selectedVoice || studioVoice || DEFAULT_VOICE_ID);
   const selectedVoiceName = selectedVoiceOption.name;
   const selectedElevenLabsId = selectedVoiceOption.voiceId || selectedVoiceOption.id;
 
@@ -170,7 +183,7 @@ export default function CampaignPreviewModal({
       setLocalStatus(campaignData.status);
       setEditedScript(campaignData.script || "");
 
-      setSelectedVoice(resolveVoiceOption(campaignData.voice_id || DEFAULT_VOICE_ID).id);
+      setSelectedVoice(resolveVoiceOption(studioVoice || campaignData.voice_id || DEFAULT_VOICE_ID).id);
 
       setLocalHitl(campaignData.hitl || null);
       setLocalVideoUrl(campaignData.video_url || null);
@@ -183,6 +196,11 @@ export default function CampaignPreviewModal({
       }
     }
   }, [isOpen, campaignData?.session_id]); // Only run when modal opens or session changes
+
+  useEffect(() => {
+    if (!isOpen || !studioVoice) return;
+    setSelectedVoice(resolveVoiceOption(studioVoice).id);
+  }, [studioVoice, isOpen]);
 
   // Keep local fields in sync with campaignData when it updates from polling
   useEffect(() => {
@@ -310,7 +328,7 @@ export default function CampaignPreviewModal({
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       if (onRefresh) onRefresh();
-      onClose();
+      handleClose();
       window.location.reload();
     } catch (error: any) {
       console.error("Apply changes error:", error);
@@ -369,7 +387,7 @@ export default function CampaignPreviewModal({
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       if (onRefresh) onRefresh();
-      onClose();
+      handleClose();
       window.location.reload();
     } catch (error: any) {
       console.error("Approval error:", error);
@@ -450,7 +468,7 @@ export default function CampaignPreviewModal({
       setSelectedAssetId(null);
 
       if (onRefresh) onRefresh();
-      onClose();
+      handleClose();
       // Status will be updated by polling in parent
     } catch (error: any) {
       console.error(`Step ${action} error:`, error);
@@ -491,6 +509,9 @@ export default function CampaignPreviewModal({
     try {
       const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       const sId = campaignData.session_id || campaignData.campaign_id;
+      const voiceNow = selectedVoice || studioVoice || "";
+      const voiceChanged = voiceNow !== (lastSentVoice.current || "");
+      if (voiceChanged) lastSentVoice.current = voiceNow;
       const response = await apiFetch(`${API_BASE}/ai/director/chat`, {
         method: "POST",
         headers: {
@@ -499,7 +520,9 @@ export default function CampaignPreviewModal({
         },
         body: JSON.stringify({
           session_id: sId,
-          message: userMsg.content,
+          message: voiceChanged
+            ? `${userMsg.content}\n\n${studioVoiceTag(voiceNow)}`
+            : userMsg.content,
           assets: [],
           tag: "director",
         }),
@@ -569,7 +592,7 @@ export default function CampaignPreviewModal({
 
   return (
     <div className="fixed inset-y-0 right-0 left-0 lg:left-[280px] z-150 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200 font-sans">
-      <div className="absolute inset-0" onClick={onClose} />
+      <div className="absolute inset-0" onClick={handleClose} />
 
       <div className="relative bg-white w-full max-w-2xl rounded-[32px] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-300">
         {/* Header */}
@@ -623,7 +646,8 @@ export default function CampaignPreviewModal({
               {autoSpeak ? <Icons.Volume className="w-5 h-5" /> : <Icons.Mute className="w-5 h-5" />}
             </button>
             <button
-              onClick={onClose}
+              type="button"
+              onClick={handleClose}
               className="p-2 hover:bg-[#F1F5F9] rounded-full transition-colors group cursor-pointer"
             >
               <Icons.Plus className="w-5 h-5 rotate-45 text-[#94A3B8] group-hover:text-[#121212]" />
@@ -919,7 +943,7 @@ export default function CampaignPreviewModal({
                 <h3 className="text-[12px] font-black text-[#02022C] uppercase tracking-[0.2em]">Neural Voice Casting</h3>
                 <VoiceSelector
                   selectedVoice={selectedVoice}
-                  onSelect={(id) => setSelectedVoice(id)}
+                  onSelect={handlePickVoice}
                 />
                 <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 ml-1 leading-relaxed">
                   Active Selection: <span className="text-[#02022C]">{selectedVoiceName}</span>
@@ -1099,7 +1123,7 @@ export default function CampaignPreviewModal({
                     <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest pl-1">Neural Voice Casting:</p>
                     <VoiceSelector
                       selectedVoice={selectedVoice}
-                      onSelect={(id) => setSelectedVoice(id)}
+                      onSelect={handlePickVoice}
                     />
                     <div className="space-y-2">
                       <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest pl-1">Specific Voiceover Instructions (Optional):</p>
@@ -1339,7 +1363,8 @@ export default function CampaignPreviewModal({
               </button>
             )}
             <button
-              onClick={onClose}
+              type="button"
+              onClick={handleClose}
               className="h-11 px-8 bg-[#02022C] text-white rounded-xl font-bold text-sm hover:shadow-xl hover:-translate-y-px transition-all"
             >
               Close Preview

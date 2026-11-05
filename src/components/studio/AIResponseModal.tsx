@@ -7,6 +7,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { getToken } from "@/lib/auth";
 import { apiFetch } from "@/lib/api";
 import { cn, enrichMessageWithCampaign, normalizeAssetUrl, formatFileSize, stripVoiceMeta } from "@/lib/utils";
+import { studioVoiceTag } from "@/components/agents/audio-lead/VoiceSelector";
 import { MarkdownRenderer } from "@/components/ui/MarkdownRenderer";
 import { useVoiceInput } from "@/hooks/useVoiceInput";
 import { useTextToSpeech } from "@/hooks/useTextToSpeech";
@@ -30,6 +31,8 @@ interface AIResponseModalProps {
   selectedCampaign?: any | null;
   onCampaignStart?: (campaign: any) => void;
   initialUserAssets?: any[];
+  selectedVoice?: string;
+  heroFollowUp?: { id: string; user: string; ai: string; assets?: any[] } | null;
 }
 
 import { useUser } from "@/context/UserContext";
@@ -60,7 +63,9 @@ export default function AIResponseModal({
   initialHistory,
   selectedCampaign,
   onCampaignStart,
-  initialUserAssets
+  initialUserAssets,
+  selectedVoice,
+  heroFollowUp
 }: AIResponseModalProps) {
   console.log(`[AIResponseModal] Rendered. isOpen:`, isOpen);
   const router = useRouter();
@@ -71,6 +76,7 @@ export default function AIResponseModal({
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const lastSentVoice = useRef(selectedVoice || "");
 
   // Voice input for chat
   const handleVoiceResult = useCallback((text: string) => {
@@ -81,31 +87,33 @@ export default function AIResponseModal({
   const lastSpokenMessageId = useRef<string | null>(null);
   const [currentlySpeakingId, setCurrentlySpeakingId] = useState<string | null>(null);
 
+  const handleClose = () => {
+    stopSpeaking();
+    onClose();
+  };
+
   // Centralized auto-speak logic
   useEffect(() => {
     if (!isOpen) {
       stopSpeaking();
-      lastSpokenMessageId.current = null;
+      setCurrentlySpeakingId(null);
+      return;
+    }
+
+    if (isMuted) {
+      stopSpeaking();
       setCurrentlySpeakingId(null);
       return;
     }
 
     const lastAIMessage = [...messages].reverse().find(m => m.role === "ai");
     if (!lastAIMessage) return;
+    if (lastSpokenMessageId.current === lastAIMessage.id) return;
 
-    const isNewMessage = lastSpokenMessageId.current !== lastAIMessage.id;
-
-    if (!isMuted && isNewMessage) {
-      const cleaned = cleanContent(lastAIMessage.content);
-      console.log(`[AIResponseModal] Auto-speaking message ${lastAIMessage.id}:`, cleaned);
-      speak(cleaned);
-      lastSpokenMessageId.current = lastAIMessage.id;
-      setCurrentlySpeakingId(lastAIMessage.id);
-    } else if (isMuted) {
-      stopSpeaking();
-      lastSpokenMessageId.current = null;
-      setCurrentlySpeakingId(null);
-    }
+    const cleaned = cleanContent(lastAIMessage.content);
+    speak(cleaned);
+    lastSpokenMessageId.current = lastAIMessage.id;
+    setCurrentlySpeakingId(lastAIMessage.id);
   }, [isMuted, isOpen, messages, speak, stopSpeaking]);
 
   // Sync isSpeaking state back to currentlySpeakingId
@@ -120,7 +128,7 @@ export default function AIResponseModal({
     if (isSpeaking && currentlySpeakingId === messageId) {
       stopSpeaking();
       setCurrentlySpeakingId(null);
-    } else {
+    } else if (!isMuted) {
       speak(cleaned);
       setCurrentlySpeakingId(messageId);
     }
@@ -168,55 +176,81 @@ export default function AIResponseModal({
 
   const isInputDisabled = isGenerating || isTerminalMessage;
 
-  // Initialize messages when modal opens
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      if (initialHistory && initialHistory.length > 0) {
-        // Load from existing history
-        const historicalMessages: Message[] = initialHistory.map((m: { role: string; content: string }, i: number) => {
-          let content = m.content;
-          // Robustly parse JSON-wrapped responses if they exist in history
-          if (content.trim().startsWith("{") && content.trim().endsWith("}")) {
-            try {
-              const parsed = JSON.parse(content);
-              content = parsed.response || parsed.message || parsed.ai_message || content;
-            } catch (e) { /* fallback to raw content */ }
-          }
+  const primedSessionRef = useRef("");
+  const lastHeroFollowUpRef = useRef("");
 
-          return {
-            id: `hist-${i}-${Date.now()}`,
-            role: (m.role === "assistant" || m.role === "ai") ? "ai" : "user",
-            content: stripVoiceMeta(content),
-            timestamp: new Date(),
-            assets: (m as any).assets
-          };
-        });
-        setMessages(historicalMessages);
-      } else if (initialUserMessage && initialAIResponse) {
-        // Fallback to initial exchange
-        setMessages([
-          {
-            id: "initial-user",
-            role: "user",
-            content: stripVoiceMeta(initialUserMessage),
-            timestamp: new Date(),
-            assets: initialUserAssets || []
-          },
-          {
-            id: "initial-ai",
-            role: "ai",
-            content: initialAIResponse,
-            timestamp: new Date()
-          }
-        ]);
-      }
-    } else if (!isOpen) {
-      setMessages([]);
-      setInputText("");
-      setIsGenerating(false);
-      stopListening();
+  useEffect(() => {
+    if (!sessionId) primedSessionRef.current = "";
+  }, [sessionId]);
+
+  // Keep the thread when the dialog is hidden. Only reset for a new session id.
+  useEffect(() => {
+    if (!isOpen || !sessionId) return;
+    if (primedSessionRef.current === sessionId) return;
+    primedSessionRef.current = sessionId;
+
+    if (initialHistory && initialHistory.length > 0) {
+      const historicalMessages: Message[] = initialHistory.map((m: { role: string; content: string }, i: number) => {
+        let content = m.content;
+        if (content.trim().startsWith("{") && content.trim().endsWith("}")) {
+          try {
+            const parsed = JSON.parse(content);
+            content = parsed.response || parsed.message || parsed.ai_message || content;
+          } catch (e) { /* fallback to raw content */ }
+        }
+
+        return {
+          id: `hist-${i}-${sessionId}`,
+          role: (m.role === "assistant" || m.role === "ai") ? "ai" : "user",
+          content: stripVoiceMeta(content),
+          timestamp: new Date(),
+          assets: (m as any).assets
+        };
+      });
+      setMessages(historicalMessages);
+      return;
     }
-  }, [isOpen, initialUserMessage, initialAIResponse, initialHistory]);
+
+    if (initialUserMessage && initialAIResponse) {
+      setMessages([
+        {
+          id: "initial-user",
+          role: "user",
+          content: stripVoiceMeta(initialUserMessage),
+          timestamp: new Date(),
+          assets: initialUserAssets || []
+        },
+        {
+          id: "initial-ai",
+          role: "ai",
+          content: initialAIResponse,
+          timestamp: new Date()
+        }
+      ]);
+    }
+  }, [isOpen, sessionId, initialUserMessage, initialAIResponse, initialHistory, initialUserAssets]);
+
+  useEffect(() => {
+    if (!heroFollowUp || !isOpen || !sessionId) return;
+    if (lastHeroFollowUpRef.current === heroFollowUp.id) return;
+    lastHeroFollowUpRef.current = heroFollowUp.id;
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: `${heroFollowUp.id}-user`,
+        role: "user",
+        content: stripVoiceMeta(heroFollowUp.user),
+        timestamp: new Date(),
+        assets: heroFollowUp.assets || []
+      },
+      {
+        id: `${heroFollowUp.id}-ai`,
+        role: "ai",
+        content: heroFollowUp.ai,
+        timestamp: new Date()
+      }
+    ]);
+  }, [heroFollowUp, isOpen, sessionId]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -247,6 +281,10 @@ export default function AIResponseModal({
 
       // Enrich follow-up message with campaign context and assets if available
       let apiMessage = enrichMessageWithCampaign(userMsg.content, selectedCampaign);
+      if ((selectedVoice || "") !== (lastSentVoice.current || "")) {
+        apiMessage = `${apiMessage}\n\n${studioVoiceTag(selectedVoice)}`;
+        lastSentVoice.current = selectedVoice || "";
+      }
 
       const currentAssets = initialUserAssets || [];
       if (currentAssets.length > 0) {
@@ -365,6 +403,7 @@ export default function AIResponseModal({
           </div>
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={() => setIsMuted(!isMuted)}
               className={cn(
                 "p-2 rounded-full transition-colors group",
@@ -375,7 +414,8 @@ export default function AIResponseModal({
               {!isMuted ? <Icons.Volume2 className="w-5 h-5" /> : <Icons.Mute className="w-5 h-5" />}
             </button>
             <button
-              onClick={onClose}
+              type="button"
+              onClick={handleClose}
               className="p-2 hover:bg-[#F1F5F9] rounded-full transition-colors group cursor-pointer"
             >
               <Icons.Plus className="w-5 h-5 rotate-45 text-[#94A3B8] group-hover:text-[#121212]" />

@@ -10,7 +10,7 @@ import { cn, normalizeAssetUrl } from "@/lib/utils";
 import { apiFetch } from "@/lib/api";
 
 
-import { VoiceSelector, DEFAULT_VOICE_ID, resolveVoiceOption } from "@/components/agents/audio-lead/VoiceSelector";
+import { VoiceSelector, DEFAULT_VOICE_ID, studioVoiceTag } from "@/components/agents/audio-lead/VoiceSelector";
 
 import { useUser } from "@/context/UserContext";
 
@@ -54,6 +54,10 @@ interface StudioHeroProps {
   onViewDetailsforcampaigns?: (campaign: Campaign) => void;
   onSend?: (prompt: string, assets?: Asset[]) => void;
   isSending?: boolean;
+  hasActiveChat?: boolean;
+  onContinueChat?: () => void;
+  onNewChat?: () => void;
+  onVoiceChange?: (voiceId: string) => void;
 }
 
 const quickPrompts = [
@@ -72,14 +76,23 @@ export default function StudioHero({
   onViewDetails,
   onViewDetailsforcampaigns,
   onSend,
-  isSending
+  isSending,
+  hasActiveChat,
+  onContinueChat,
+  onNewChat,
+  onVoiceChange
 }: StudioHeroProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAssetModalOpen, setIsAssetModalOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [selectedVoice, setSelectedVoice] = useState(DEFAULT_VOICE_ID);
   const [voiceError, setVoiceError] = useState(false);
+
+  useEffect(() => {
+    onVoiceChange?.(selectedVoice || DEFAULT_VOICE_ID);
+  }, [selectedVoice, onVoiceChange]);
   const [selectedAssets, setSelectedAssets] = useState<Asset[]>([]);
+  const lastSentVoice = useRef<string | null>(null);
   const [dbCampaigns, setDbCampaigns] = useState<Campaign[]>([]);
   const { user } = useUser();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -151,13 +164,16 @@ export default function StudioHero({
   const handleSend = () => {
     if (!prompt.trim()) return;
 
-    const picked = resolveVoiceOption(selectedVoice || DEFAULT_VOICE_ID);
-    const activeVoice = picked.voiceId || picked.id;
     setVoiceError(false);
 
-    // Send the ElevenLabs id so Video TTS uses Greg Boyd, not Adam.
-    const voiceName = picked.name;
-    const enrichedPrompt = `${prompt.trim()}\n\n[Voice: ${activeVoice} (${voiceName})]`;
+    // Send the picker voice only when it changes. A repeated Greg tag was
+    // putting his voice back after he asked for another one.
+    const voiceNow = selectedVoice || "";
+    const voiceChanged = lastSentVoice.current !== voiceNow;
+    if (voiceChanged) lastSentVoice.current = voiceNow;
+    const enrichedPrompt = voiceChanged
+      ? `${prompt.trim()}\n\n${studioVoiceTag(selectedVoice)}`
+      : prompt.trim();
 
     onSend?.(enrichedPrompt, selectedAssets);
     setPrompt("");
@@ -226,6 +242,29 @@ export default function StudioHero({
       </div>
       <div className="relative group flex flex-col gap-6">
         <div className="relative flex flex-col gap-3">
+        {hasActiveChat && (
+          <div className="flex items-center justify-between gap-3 px-4 py-2.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl">
+            <p className="text-[12px] font-semibold text-[#121212]">
+              Your Director chat is still here. Change voice, then continue.
+            </p>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={onContinueChat}
+                className="px-3 h-8 rounded-lg bg-[#02022C] text-white text-[11px] font-bold hover:bg-[#02022C]/90 active:scale-95"
+              >
+                Continue
+              </button>
+              <button
+                type="button"
+                onClick={onNewChat}
+                className="px-3 h-8 rounded-lg border border-[#E2E8F0] bg-white text-[#64748B] text-[11px] font-bold hover:text-[#121212] hover:border-[#CBD5E1]"
+              >
+                New chat
+              </button>
+            </div>
+          </div>
+        )}
         {selectedCampaign && (
           <div className="absolute -top-3 right-4 flex items-center gap-2 px-3 py-1 bg-[#F1F5F9] border border-[#E2E8F0] rounded-full z-20 shadow-sm animate-in fade-in slide-in-from-top-1">
             <span className="text-[10px] font-black text-brand-primary uppercase tracking-wider">Campaign: {selectedCampaign.title}</span>
@@ -338,6 +377,7 @@ export default function StudioHero({
             onSelect={(id) => {
               setSelectedVoice(id);
               setVoiceError(false);
+              onVoiceChange?.(id);
             }}
             className={cn(
               "transition-all duration-300",
